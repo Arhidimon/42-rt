@@ -10,23 +10,32 @@ OPT=-O0
 WARN=-Wall
  
 PTHREAD=-pthread
- 
-CCFLAGS=$(DEBUG) $(OPT) $(WARN) $(PTHREAD) -pipe
+
+.PHONY: clean all default
+.PRECIOUS: $(TARGET) $(OBJECTS)
+
+CCFLAGS=$(DEBUG) $(OPT) $(WARN) $(PTHREAD) -pipe -lm 
  
 GTKLIB=`pkg-config --cflags --libs gtk+-3.0`
  
 # linker
 LD=gcc
-LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic
+LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic -lm
+
+SRCS_DIR    = ./src
+
+OBJECTS=main.o rotate.o light.o add_light.o add_primitive.o intersection.o trace.o vector.o render.o math.o  supersampling.o scenes.o object.o color.o  init.o
+#keyboard.o fps.o consoleout.o
+HEADERS = includes/
+
+all: $(TARGET)
  
-OBJS=main.o
- 
-all: $(OBJS)
-	$(LD) -o $(TARGET) $(OBJS) $(LDFLAGS)
-	
-main.o: src/main.c
-	$(CC) -c $(CCFLAGS) src/main.c $(GTKLIB) -o main.o
-	
+$(TARGET): $(OBJECTS)
+	$(LD) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
+
+$(OBJECTS): %.o: $(SRCS_DIR)/%.c $(HEADERS)
+	$(CC) $(CCFLAGS) -c $< $(GTKLIB) -o $@
+
 clean:
 	rm -f *.o $(TARGET)
 

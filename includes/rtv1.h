@@ -13,8 +13,8 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-# define MAX(a,b)({ __typeof__ (a) _a=(a); __typeof__ (b) _b =(b);_a>_b?_a:_b;})
-# define MIN(a,b)({ __typeof__ (a) _a=(a); __typeof__ (b) _b =(b);_a<_b?_a:_b;})
+//# define MAX(a,b)({ __typeof__ (a) _a=(a); __typeof__ (b) _b =(b);_a>_b?_a:_b;})
+//# define MIN(a,b)({ __typeof__ (a) _a=(a); __typeof__ (b) _b =(b);_a<_b?_a:_b;})
 # define TOGGLE(x) (x = (x==0)?1:0)
 
 # define FOV 1.0
@@ -56,13 +56,11 @@
 # include <math.h>
 # include <unistd.h>
 # include <stdint.h>
-# include "../frameworks/SDL2.framework/Headers/SDL.h"
-# include "../frameworks/SDL2_ttf.framework/Headers/SDL_ttf.h"
+# include <stdlib.h>
+//# include "../libft/includes/libft.h"
+//# include "../libft/includes/get_next_line.h"
 
-# include "../libft/includes/libft.h"
-# include "../libft/includes/get_next_line.h"
-
-typedef float			t_vector __attribute__((vector_size(sizeof(float)*3)));
+typedef float			t_vector __attribute__((vector_size(sizeof(float)*4)));
 typedef float			t_roots __attribute__((vector_size(sizeof(float)*2)));
 
 typedef struct			s_vertex
@@ -196,17 +194,6 @@ typedef struct			s_app
 	t_camera			camera;
 	t_scene				scene;
 	t_screen			screen;
-	SDL_Window			*window;
-	SDL_Renderer		*renderer;
-	SDL_Texture			*maintexture;
-	TTF_Font			*messagefont;
-	SDL_Color			messagecolor;
-	int					messagewidth;
-	int					messageheight;
-	int32_t				framestimes[FRAME_VALUES];
-	int32_t				frametimelast;
-	int32_t				framecount;
-	SDL_Surface			*icon;
 	t_primitive			*curobj;
 	t_light				*curlobj;
 	t_object_type		curobjtype;
@@ -263,7 +250,7 @@ t_roots					solve_qe(float a, float b, float c);
 
 void					ssaa(t_app *app);
 
-void					key_handler(SDL_Scancode key_sc);
+//void					key_handler(SDL_Scancode key_sc);
 void					key_handler1(t_app *app);
 
 void					testscene_1(t_app *app);
