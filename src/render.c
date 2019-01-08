@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
-#include "pthread.h"
+#include <gtk/gtk.h>
 
 t_vector	canvas_to_viewport(t_app *app, int x, int y)
 {
@@ -30,6 +30,7 @@ void		render(t_app *app)
 	t_ray		ray;
 	t_vector	d;
 
+	gtk_progress_bar_set_fraction((GtkProgressBar *)app->progressbar, 0);
 	x = -1;
 	while (++x < SCREEN_WIDTH * app->screen.ssvalue)
 	{
@@ -44,6 +45,9 @@ void		render(t_app *app)
 			app->screen.sspixels[x + y * SCREEN_WIDTH * app->screen.ssvalue] =
 					trace_ray(app, &ray, 1, app->iterations);
 		}
+		gtk_progress_bar_set_fraction((GtkProgressBar *)app->progressbar, (double)x / (SCREEN_WIDTH * app->screen.ssvalue));
+		while (g_main_context_iteration(NULL, FALSE));		
 	}
 	ssaa(app);
+	gtk_widget_queue_draw(app->da);
 }

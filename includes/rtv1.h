@@ -38,7 +38,7 @@
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 640
 # define FRAME_VALUES 60
-# define SS_VALUE 1
+# define SS_VALUE 8
 # define SC_WH SCREEN_WIDTH,SCREEN_HEIGHT
 
 # define VIEWPORT_WIDTH 1
@@ -57,6 +57,7 @@
 # include <unistd.h>
 # include <stdint.h>
 # include <stdlib.h>
+#include <gtk/gtk.h>
 //# include "../libft/includes/libft.h"
 //# include "../libft/includes/get_next_line.h"
 
@@ -201,6 +202,10 @@ typedef struct			s_app
 	float				tempfloat;
 	t_vector			tv;
 	t_vector			tempvector;
+
+	GtkWidget			*progressbar;
+	GtkWidget			*window;
+    GtkWidget			*da;
 }						t_app;
 
 t_vector				rotate_0x(t_vector vector, float angle);

@@ -5,7 +5,7 @@ CC=gcc
 # debug
 DEBUG=-g
 # optimisation
-OPT=-O0
+OPT=-O3
 # warnings
 WARN=-Wall
  
@@ -112,7 +112,7 @@ clean:
 # 	@make -C $(LIBFT_DIR) fclean
 # 	@printf "\e[38;5;226m./$(NAME)   DELETED\e[0m\n"
 
-# re          : fclean all
+re          : clean all
 
 # norm		:
 # 	norminette src/ includes/

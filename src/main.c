@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <gtk/gtk.h>
 #include <cairo.h>
 #include <stdlib.h>
 #include "../includes/rtv1.h"
@@ -106,11 +105,21 @@ gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
 	// return FALSE;
 }
  
+gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
+    if (event->keyval == GDK_KEY_space)
+    {
+        write(0, "SPACE KEY PRESSED!\n", 19);
+        render(app);
+        return TRUE;
+    }
+    return FALSE;
+}
+
 int main(int argc, char *argv[])
 {
     GtkBuilder      *builder; 
-    GtkWidget       *window;
-    GtkWidget       *da;
+    // GtkWidget       *window;
+    // GtkWidget       *da;
     time_t t;
     srand((unsigned) time(&t));
  
@@ -118,19 +127,22 @@ int main(int argc, char *argv[])
     gtk_init(&argc, &argv);
  	app = initialize_app();
 		testscene_1(app);
-	render(app);
-
+	
+	
     builder = gtk_builder_new();
-    gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
+    gtk_builder_add_from_file(builder, "glade/window_main.glade", NULL);
  
-    window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
-    da = GTK_WIDGET(gtk_builder_get_object(builder, "darea"));
+    app->window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
+    app->progressbar = GTK_WIDGET(gtk_builder_get_object(builder, "progressbar"));
+    app->da = GTK_WIDGET(gtk_builder_get_object(builder, "darea"));
+
     gtk_builder_connect_signals(builder, NULL);
-    g_signal_connect(G_OBJECT (da), "draw", G_CALLBACK (draw_rt) , NULL);
+    g_signal_connect(G_OBJECT (app->da), "draw", G_CALLBACK (draw_rt) , NULL);
  
     g_object_unref(builder);
- 
-    gtk_widget_show(window);                
+ 	
+    gtk_widget_show(app->window);
+    render(app);              
     gtk_main();
  
     return 0;

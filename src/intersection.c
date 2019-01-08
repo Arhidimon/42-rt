@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
-#include <gtk/gtk.h>
 
 float		intersect_sphere(t_primitive *primitive, t_ray *ray)
 {
