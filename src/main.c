@@ -105,14 +105,11 @@ gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
 	// return FALSE;
 }
  
-gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
-    if (event->keyval == GDK_KEY_space)
-    {
-        write(0, "SPACE KEY PRESSED!\n", 19);
-        render(app);
-        return TRUE;
-    }
-    return FALSE;
+gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
+  	key_handler(event->keyval);
+  	key_handler1(app);
+    return TRUE;
 }
 
 int main(int argc, char *argv[])
@@ -126,7 +123,7 @@ int main(int argc, char *argv[])
 	
     gtk_init(&argc, &argv);
  	app = initialize_app();
-		testscene_1(app);
+		testscene_4(app);
 	
 	
     builder = gtk_builder_new();

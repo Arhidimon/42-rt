@@ -38,7 +38,7 @@
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 640
 # define FRAME_VALUES 60
-# define SS_VALUE 8
+# define SS_VALUE 1
 # define SC_WH SCREEN_WIDTH,SCREEN_HEIGHT
 
 # define VIEWPORT_WIDTH 1
@@ -51,7 +51,7 @@
 
 # define FONT_SIZE 50
 
-# define MAX_ITERS 0
+# define MAX_ITERS 10
 
 # include <math.h>
 # include <unistd.h>
