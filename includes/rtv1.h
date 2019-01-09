@@ -13,8 +13,6 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-//# define MAX(a,b)({ __typeof__ (a) _a=(a); __typeof__ (b) _b =(b);_a>_b?_a:_b;})
-//# define MIN(a,b)({ __typeof__ (a) _a=(a); __typeof__ (b) _b =(b);_a<_b?_a:_b;})
 # define TOGGLE(x) (x = (x==0)?1:0)
 
 # define FOV 1.0
@@ -58,8 +56,6 @@
 # include <stdint.h>
 # include <stdlib.h>
 #include <gtk/gtk.h>
-//# include "../libft/includes/libft.h"
-//# include "../libft/includes/get_next_line.h"
 
 typedef float			t_vector __attribute__((vector_size(sizeof(float)*4)));
 typedef float			t_roots __attribute__((vector_size(sizeof(float)*2)));
