@@ -14,13 +14,13 @@ PTHREAD=-pthread
 .PHONY: clean all default
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
-CCFLAGS=$(DEBUG) $(OPT) $(WARN) $(PTHREAD) -pipe -lm 
+CCFLAGS=$(DEBUG) $(OPT) $(WARN) $(PTHREAD) -pipe -lm  -rdynamic
  
 GTKLIB=`pkg-config --cflags --libs gtk+-3.0`
  
 # linker
 LD=gcc
-LDFLAGS=$(PTHREAD) $(GTKLIB)  -lm
+LDFLAGS=$(PTHREAD) $(GTKLIB)  -lm -rdynamic
 
 SRCS_DIR    = ./src
 

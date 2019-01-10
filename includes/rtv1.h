@@ -57,6 +57,7 @@
 # include <stdlib.h>
 #include <gtk/gtk.h>
 
+
 typedef float			t_vector __attribute__((vector_size(sizeof(float)*4)));
 typedef float			t_roots __attribute__((vector_size(sizeof(float)*2)));
 
@@ -202,7 +203,10 @@ typedef struct			s_app
 	GtkWidget			*progressbar;
 	GtkWidget			*window;
     GtkWidget			*da;
+    GtkWidget			*opendialog;
 }						t_app;
+
+extern t_app overShared;
 
 t_vector				rotate_0x(t_vector vector, float angle);
 t_vector				rotate_0y(t_vector vector, float angle);

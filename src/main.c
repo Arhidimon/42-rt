@@ -18,9 +18,12 @@
 #define HEIGHT 300
 #define BPS 8
 
-t_app *app;
+t_app *app = NULL;
 
-
+void menu_open (GtkMenuItem *menuitem, gpointer user_data)
+{
+	gtk_widget_set_visible (app->opendialog, TRUE);
+}
 
 gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
@@ -115,8 +118,6 @@ gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data)
 int main(int argc, char *argv[])
 {
     GtkBuilder      *builder; 
-    // GtkWidget       *window;
-    // GtkWidget       *da;
     time_t t;
     srand((unsigned) time(&t));
  
@@ -132,9 +133,10 @@ int main(int argc, char *argv[])
     app->window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
     app->progressbar = GTK_WIDGET(gtk_builder_get_object(builder, "progressbar"));
     app->da = GTK_WIDGET(gtk_builder_get_object(builder, "darea"));
+    app->opendialog = GTK_WIDGET(gtk_builder_get_object(builder, "opendialog"));
 
     gtk_builder_connect_signals(builder, NULL);
-    g_signal_connect(G_OBJECT (app->da), "draw", G_CALLBACK (draw_rt) , NULL);
+   
  
     g_object_unref(builder);
  	
