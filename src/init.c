@@ -12,26 +12,23 @@
 
 #include "../includes/rtv1.h"
 
-t_app	*initialize_app(void)
+void	initialize_app(void)
 {
-	t_app *app;
-
-	app = malloc(sizeof(t_app));
-	app->screen.ssvalue = SS_VALUE;
-	app->screen.pixels = malloc(sizeof(int32_t) * (int)(SCREEN_WIDTH
+	g_app = malloc(sizeof(t_app));
+	g_app->screen.ssvalue = SS_VALUE;
+	g_app->screen.pixels = malloc(sizeof(int32_t) * (int)(SCREEN_WIDTH
 			* SCREEN_HEIGHT));
-	app->screen.sspixels = malloc(sizeof(int32_t) * (int)(SCREEN_WIDTH
-			* SCREEN_HEIGHT) * app->screen.ssvalue * app->screen.ssvalue);
-	app->scene.rays = malloc(sizeof(t_ray) * (int)(SCREEN_WIDTH
+	g_app->screen.sspixels = malloc(sizeof(int32_t) * (int)(SCREEN_WIDTH
+			* SCREEN_HEIGHT) * g_app->screen.ssvalue * g_app->screen.ssvalue);
+	g_app->scene.rays = malloc(sizeof(t_ray) * (int)(SCREEN_WIDTH
 			* SCREEN_HEIGHT));
-	app->camera.position = (t_vector) {0, 0, -3};
-	app->camera.fov = FOV;
-	app->camera.direction = (t_vector) {0, 0, 0};
-	app->iterations = MAX_ITERS;
-	app->shadow = 1;
-	app->light = 1;
-	app->curobj = app->scene.primitives;
-	app->curobjtype = CAMERA;
-	return (app);
+	g_app->camera.position = (t_vector) {0, 0, -3};
+	g_app->camera.fov = FOV;
+	g_app->camera.direction = (t_vector) {0, 0, 0};
+	g_app->iterations = MAX_ITERS;
+	g_app->shadow = 1;
+	g_app->light = 1;
+	g_app->curobj = g_app->scene.primitives;
+	g_app->curobjtype = CAMERA;
 }
 

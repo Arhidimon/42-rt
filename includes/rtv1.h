@@ -19,8 +19,8 @@
 
 # define BG_COLOR 0
 
-# define SS_SQ (app->screen.ssvalue*app->screen.ssvalue)
-# define A_PR &(app->scene.primitives)
+# define SS_SQ (g_app->screen.ssvalue*g_app->screen.ssvalue)
+# define A_PR &(g_app->scene.primitives)
 
 # define INT_SPH (t=intersect_sphere(current,ray))>tmin&&t<closest_t
 # define INT_PL (t=intersect_plane(current,ray))>tmin&&t<closest_t
@@ -204,9 +204,10 @@ typedef struct			s_app
 	GtkWidget			*window;
     GtkWidget			*da;
     GtkWidget			*opendialog;
+    GtkBuilder			*builder;
 }						t_app;
 
-extern t_app overShared;
+extern t_app *g_app;
 
 t_vector				rotate_0x(t_vector vector, float angle);
 t_vector				rotate_0y(t_vector vector, float angle);
@@ -215,7 +216,7 @@ t_vector				rotate(t_vector rotation, t_vector vector);
 
 float					calc_magnitude(t_vector *p);
 
-float					computelight(t_app *app, t_vector p, t_vector n,
+float					computelight(t_vector p, t_vector n,
 						t_vector v);
 
 void					add_point_light(t_light **lights, t_vector vector,
@@ -234,10 +235,10 @@ t_primitive				*add_cylinder(t_primitive **primitives, t_ray pnr,
 t_primitive				*add_cone(t_primitive **primitives, t_vector position,
 						t_vector normal, int color);
 
-float					closest_intersection(t_app *app, t_ray *ray, float tmin,
+float					closest_intersection(t_ray *ray, float tmin,
 						t_primitive **object);
 
-int						trace_ray(t_app *app, t_ray *ray, float min, int depth);
+int						trace_ray(t_ray *ray, float min, int depth);
 
 t_vector				mult_vector(t_vector vector, float value);
 float					dotproduct(t_vector p1, t_vector p2);
@@ -249,34 +250,34 @@ float					calc_distance(t_vector p1, t_vector p2);
 int						multcolor(float value, int color);
 int						sumcolor(float value, int c1, int c2);
 
-void					render(t_app *app);
+void					render(void);
 
 t_roots					solve_qe(float a, float b, float c);
 
-void					ssaa(t_app *app);
+void					ssaa(void);
 
-//void					key_handler(SDL_Scancode key_sc);
-void					key_handler1(t_app *app);
 
-void					testscene_1(t_app *app);
-void					testscene_2(t_app *app);
-void					testscene_3(t_app *app);
-void					testscene_4(t_app *app);
-void					testscene_5(t_app *app);
+void					key_handler1(void);
 
-t_vector				*get_curobj_pos(t_app *app);
-t_vector				*get_curobj_dir(t_app *app);
-void					next_obj(t_app *app);
-void					prev_obj(t_app *app);
+void					testscene_1(void);
+void					testscene_2(void);
+void					testscene_3(void);
+void					testscene_4(void);
+void					testscene_5(void);
+
+t_vector				*get_curobj_pos(void);
+t_vector				*get_curobj_dir(void);
+void					next_obj(void);
+void					prev_obj(void);
 
 void					printcontrols(void);
-void					printinfo(t_app *app);
+void					printinfo(void);
 void					printinfoheader(void);
 void					clearinfo(void);
-t_app					*initialize_app(void);
+void					initialize_app(void);
 int						handle_sdl_error(void);
-int						initialize_sdl(t_app *app);
-int						count_fps(t_app *app);
-int						print_fps(t_app *app, float fps);
+int						initialize_sdl(void);
+int						count_fps(void);
+int						print_fps(float fps);
 
 #endif

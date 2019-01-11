@@ -18,11 +18,11 @@
 #define HEIGHT 300
 #define BPS 8
 
-t_app *app = NULL;
+t_app *g_app;
 
 void menu_open (GtkMenuItem *menuitem, gpointer user_data)
 {
-	gtk_widget_set_visible (app->opendialog, TRUE);
+	gtk_widget_set_visible (g_app->opendialog, TRUE);
 }
 
 gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
@@ -51,9 +51,9 @@ gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
 		y = 0;
 		while (y < SCREEN_HEIGHT)
 		{
-			pixels[y * rowstride + x * 3] = app->screen.pixels[x + y * SCREEN_WIDTH] % 256;
-			pixels[y * rowstride + x * 3 + 1] = app->screen.pixels[x + y * SCREEN_WIDTH] >> 8 % 256;
-			pixels[y * rowstride + x * 3 + 2] = app->screen.pixels[x + y * SCREEN_WIDTH] >> 16% 256;
+			pixels[y * rowstride + x * 3] = g_app->screen.pixels[x + y * SCREEN_WIDTH] % 256;
+			pixels[y * rowstride + x * 3 + 1] = g_app->screen.pixels[x + y * SCREEN_WIDTH] >> 8 % 256;
+			pixels[y * rowstride + x * 3 + 2] = g_app->screen.pixels[x + y * SCREEN_WIDTH] >> 16% 256;
 			y++;
 		}
 		x++;
@@ -111,37 +111,36 @@ gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
 gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
   	key_handler(event->keyval);
-  	key_handler1(app);
+  	key_handler1();
     return TRUE;
 }
 
 int main(int argc, char *argv[])
-{
-    GtkBuilder      *builder; 
+{ 
     time_t t;
     srand((unsigned) time(&t));
  
 	
     gtk_init(&argc, &argv);
- 	app = initialize_app();
-		testscene_4(app);
+ 	initialize_app();
+		testscene_4();
 	
 	
-    builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "glade/window_main.glade", NULL);
+    g_app->builder = gtk_builder_new();
+    gtk_builder_add_from_file(g_app->builder, "glade/window_main.glade", NULL);
  
-    app->window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
-    app->progressbar = GTK_WIDGET(gtk_builder_get_object(builder, "progressbar"));
-    app->da = GTK_WIDGET(gtk_builder_get_object(builder, "darea"));
-    app->opendialog = GTK_WIDGET(gtk_builder_get_object(builder, "opendialog"));
+    g_app->window = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "window_main"));
+    g_app->progressbar = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "progressbar"));
+    g_app->da = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "darea"));
+    g_app->opendialog = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "opendialog"));
 
-    gtk_builder_connect_signals(builder, NULL);
+    gtk_builder_connect_signals(g_app->builder, NULL);
    
  
-    g_object_unref(builder);
+    g_object_unref(g_app->builder);
  	
-    gtk_widget_show(app->window);
-    render(app);              
+    gtk_widget_show(g_app->window);
+    render();              
     gtk_main();
  
     return 0;

@@ -12,12 +12,12 @@
 
 #include "../includes/rtv1.h"
 
-void	testscene_1(t_app *app)
+void	testscene_1()
 {
 	t_primitive *p;
 
-	app->scene.primitives = NULL;
-	app->scene.lights = NULL;
+	g_app->scene.primitives = NULL;
+	g_app->scene.lights = NULL;
 	p = add_plane(A_PR, (t_vector) {-8, 0, 0}, (t_vector) {1, 0, 0}, 0xFF00FF);
 	p->reflection = 0.99;
 	p = add_plane(A_PR, (t_vector) {8, 0, 0}, (t_vector) {-1, 0, 0}, 0xFF00FF);
@@ -35,16 +35,16 @@ void	testscene_1(t_app *app)
 	p = add_sphere(A_PR, (t_vector) {0, 0, 0}, 1, 255);
 	p->reflection = 0;
 	p->specular = 10;
-	add_ambient_light(&(app->scene.lights), 0.4);
-	add_point_light(&(app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
+	add_ambient_light(&(g_app->scene.lights), 0.4);
+	add_point_light(&(g_app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
 }
 
-void	testscene_2(t_app *app)
+void	testscene_2()
 {
 	t_primitive *p;
 
-	app->scene.primitives = NULL;
-	app->scene.lights = NULL;
+	g_app->scene.primitives = NULL;
+	g_app->scene.lights = NULL;
 	p = add_plane(A_PR, (t_vector) {-8, 0, 0}, (t_vector) {1, 0, 0}, 0xFF00FF);
 	p->reflection = 0.2;
 	p = add_plane(A_PR, (t_vector) {8, 0, 0}, (t_vector) {-1, 0, 0}, 0xFF00FF);
@@ -60,16 +60,16 @@ void	testscene_2(t_app *app)
 	p = add_cylinder(A_PR, (t_ray){{0, 0, 0}, {0, 1, 0}}, 1, 255);
 	p->reflection = 0;
 	p->specular = 10;
-	add_ambient_light(&(app->scene.lights), 0.4);
-	add_point_light(&(app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
+	add_ambient_light(&(g_app->scene.lights), 0.4);
+	add_point_light(&(g_app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
 }
 
-void	testscene_3(t_app *app)
+void	testscene_3()
 {
 	t_primitive *p;
 
-	app->scene.primitives = NULL;
-	app->scene.lights = NULL;
+	g_app->scene.primitives = NULL;
+	g_app->scene.lights = NULL;
 	p = add_plane(A_PR, (t_vector) {-8, 0, 0}, (t_vector) {1, 0, 0}, 0xFF00FF);
 	p->reflection = 0.2;
 	p = add_plane(A_PR, (t_vector) {8, 0, 0}, (t_vector) {-1, 0, 0}, 0xFF00FF);
@@ -85,22 +85,22 @@ void	testscene_3(t_app *app)
 	p = add_cylinder(A_PR, (t_ray){{0, 0, 0}, {0, 1, 0}}, 1, 255);
 	p->reflection = 0;
 	p->specular = 10;
-	add_point_light(&(app->scene.lights), (t_vector) {5, 0, 1}, 0.4);
+	add_point_light(&(g_app->scene.lights), (t_vector) {5, 0, 1}, 0.4);
 	p = add_cone(A_PR, (t_vector) {0, 1, 0}, (t_vector) {0, 1, 0}, 255);
 	p->reflection = 0.0;
 	p->specular = 10;
-	add_ambient_light(&(app->scene.lights), 0.4);
+	add_ambient_light(&(g_app->scene.lights), 0.4);
 }
 
-void	testscene_4(t_app *app)
+void	testscene_4()
 {
 	t_primitive *p;
 
-	app->scene.primitives = NULL;
-	app->scene.lights = NULL;
-	add_point_light(&(app->scene.lights), (t_vector) {5, 0, 0}, 0.4);
-	add_point_light(&(app->scene.lights), (t_vector) {-5, 5, -5}, 0.4);
-	p = add_sphere(&(app->scene.primitives), (t_vector) {0, -1, 3}, 1, 255);
+	g_app->scene.primitives = NULL;
+	g_app->scene.lights = NULL;
+	add_point_light(&(g_app->scene.lights), (t_vector) {5, 0, 0}, 0.4);
+	add_point_light(&(g_app->scene.lights), (t_vector) {-5, 5, -5}, 0.4);
+	p = add_sphere(&(g_app->scene.primitives), (t_vector) {0, -1, 3}, 1, 255);
 	p->reflection = 0.0;
 	p->specular = 1;
 	p = add_sphere(A_PR, (t_vector) {2, 0, 4}, 1, 255 << 8);
@@ -113,15 +113,15 @@ void	testscene_4(t_app *app)
 			(t_vector) {0, 1, 0}, 0xFF00FF);
 	p->reflection = 0.5;
 	p->specular = 1;
-	add_ambient_light(&(app->scene.lights), 0.4);
+	add_ambient_light(&(g_app->scene.lights), 0.4);
 	p->specular = -1;
 	p->reflection = 0.5;
 }
 
-void	testscene_5(t_app *app)
+void	testscene_5()
 {
-	app->scene.primitives = NULL;
-	app->scene.lights = NULL;
-	add_point_light(&(app->scene.lights), (t_vector) {5, 0, 0}, 0.4);
-	add_ambient_light(&(app->scene.lights), 0.4);
+	g_app->scene.primitives = NULL;
+	g_app->scene.lights = NULL;
+	add_point_light(&(g_app->scene.lights), (t_vector) {5, 0, 0}, 0.4);
+	add_ambient_light(&(g_app->scene.lights), 0.4);
 }
