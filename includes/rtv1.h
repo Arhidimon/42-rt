@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 14:32:18 by dbezruch          #+#    #+#             */
-/*   Updated: 2018/10/22 15:58:06 by dbezruch         ###   ########.fr       */
+/*   Updated: 2019/01/14 12:12:31 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,10 @@ typedef struct			s_app
     GtkWidget			*da;
     GtkWidget			*opendialog;
     GtkBuilder			*builder;
+	GdkPixbuf			*texture;
+	const guint8		*raw_text;
+	int					text_w;
+	int					text_h;
 }						t_app;
 
 extern t_app *g_app;

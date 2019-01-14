@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 19:33:15 by dbezruch          #+#    #+#             */
-/*   Updated: 2019/01/13 17:49:58 by atikhono         ###   ########.fr       */
+/*   Updated: 2019/01/14 19:52:56 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,19 @@ int			get_text(t_primitive *obj, t_ray *ray, float clos_t)
 
 	if (obj->type == SPHERE)
 	{
-		GError *error;
-		const char *filename = "test.bpm";
-		GdkPixbuf *texture = NULL;
-		texture = gdk_pixbuf_new_from_file(filename, &error);
-		if (texture)
-			printf("error: %p", error);
-//		const guint8 *raw_text = gdk_pixbuf_read_pixels(texture);
-		point = mult_vector((ray->position + ray->direction), clos_t);
-		norm = normalize(obj->position - point);
-//		printf("norm: x:%f y:%f z:%f\n", norm[0], norm[1], norm[2], norm[3]);
-		u = 0.5 + atan2(norm[2] , norm[0]) / (2 * M_PI);
-		v = 0.5 - asin(norm[1]) / M_PI;
+		point = ray->position + mult_vector(normalize(ray->direction), clos_t);
+		norm = normalize(point - obj->p.sphere.position);
+		u = 0.5 + atan2(norm[0], norm[2]) / (2 * M_PI);
+		v = 0.5 + norm[1] * 0.5;
 //		printf("u: %f v:%f\n", u, v);
-//		float x = (float)(gdk_pixbuf_get_width(texture));
-//		float y = (float)(gdk_pixbuf_get_height(texture));
 //		printf("%f %f\n", x, y);
-//		color = raw_text[(int)(u * x * v * y + u * x)];
+		int i = (int)(g_app->text_h * v) * g_app->text_w + (int)(u * g_app->text_w);
+		color = (int)g_app->raw_text[i];
+//		int x = u * 2;
+//		int	y = v * 2;
+//		int i = y * 2 + x;
+//		int	text[] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF};
+//		color = text[i];
 		return(color);
 	}
 	else
@@ -93,7 +89,7 @@ int			trace_ray(t_ray *ray, float min, int depth)
 	if (closest_obj == NULL)
 		return (BG_COLOR);
 	if (!g_app->light)
-		return (closest_obj->color);
+		return (get_text(closest_obj, ray, closest_t));
 	g_app->tv = get_normal(closest_obj, ray, closest_t);
 	g_app->tempfloat = closest_obj->specular;
 	color = multcolor(computelight(g_app->tv + mult_vector(-(ray->direction),
