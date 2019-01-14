@@ -29,6 +29,7 @@ void	initialize_app(void)
 	g_app->shadow = 1;
 	g_app->light = 1;
 	g_app->curobj = g_app->scene.primitives;
+	g_app->curlobj = g_app->scene.lights;
 	g_app->curobjtype = CAMERA;
 }
 

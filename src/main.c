@@ -124,7 +124,8 @@ int main(int argc, char *argv[])
     gtk_init(&argc, &argv);
  	initialize_app();
 		testscene_4();
-	
+	g_app->curobj = g_app->scene.primitives;
+	g_app->curlobj = g_app->scene.lights;
 	
     g_app->builder = gtk_builder_new();
     gtk_builder_add_from_file(g_app->builder, "glade/window_main.glade", NULL);
