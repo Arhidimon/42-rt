@@ -280,4 +280,7 @@ int						initialize_sdl(void);
 int						count_fps(void);
 int						print_fps(float fps);
 
+
+int						ft_parser(void);
+
 #endif
