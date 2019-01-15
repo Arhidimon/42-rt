@@ -11,9 +11,34 @@
 #define MAX_T 1024
 # define BUFF_SIZE	32
 
-
-
 // LIBFT
+
+typedef struct		s_list
+{
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
+}					t_list;
+
+int		ft_hex_to_int(char *hex)
+{
+	int		result;
+	char	tmp;
+
+	result = 0;
+	while (*hex)
+	{
+		tmp = *hex++;
+		if (tmp >= '0' && tmp <= '9')
+			tmp -= '0';
+		else if (tmp >= 'A' && tmp <= 'F')
+			tmp = tmp - 'A' + 10;
+		else if (tmp >= 'a' && tmp <= 'f')
+			tmp = tmp - 'a' + 10;
+		result = (result << 4) | tmp;
+	}
+	return (result);
+}
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -31,15 +56,6 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
-
-
-typedef struct		s_list
-{
-	void			*content;
-	size_t			content_size;
-	struct s_list	*next;
-}					t_list;
-
 
 int		ft_isdigit(int c)
 {
@@ -184,9 +200,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (pstr);
 }
 
-
-
-
 int		ft_atoi(const char *str)
 {
 	int					i;
@@ -247,8 +260,6 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 	new->next = NULL;
 	return (new);
 }
-
-
 
 int	ft_isspace(int c)
 {
@@ -314,8 +325,8 @@ double	ft_atod(const char *str)
 	return (sign * out);
 }
 
-
 // GET_NEXT_LINE
+
 t_list	*get_elem(int fd, t_list **head)
 {
 	t_list *ptr;
@@ -399,8 +410,7 @@ int		get_next_line(const int fd, char **line)
 	return (0);
 }
 
-// PARSER
-
+/* PARSER */
 
 char	*ft_read_file(char *filepath)
 {
@@ -485,7 +495,6 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 	return (0);
 }
 
-
 int		ft_check_alight(char *string) {
 	int		i,t;
 	char	*str, *x;
@@ -514,7 +523,6 @@ int		ft_check_alight(char *string) {
 
 	return (0);
 }
-
 
 int		ft_check_plight(char *string) {
 	int		i,t;
@@ -570,8 +578,6 @@ int		ft_check_plight(char *string) {
 
 	return (0);
 }
-
-
 
 int		ft_check_plane(char *string, t_primitive *p) {
 	int		i,t;
@@ -648,31 +654,12 @@ int		ft_check_plane(char *string, t_primitive *p) {
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "color") && tokens[i+1].size == 3) {
-			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
-			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
-			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
-
-			printf("sph_color x %f\n", ft_atod(x));
-			printf("sph_color y %f\n", ft_atod(y));
-			printf("sph_color z %f\n", ft_atod(z));
-
-			// primitive->color = color
-
+		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			p->color = ft_hex_to_int(x);
 			free(x);
-			free(y);
-			free(z);
 		}
-		// if (!ft_strcmp(str, "size") && tokens[i].size == 1) {
-		// 	x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
-		// 	printf("sph_size %f\n", ft_atod(x));
-
-		// 	p->p.sphere.radius = ft_atod(x);
-		// 	p->p.sphere.radius2 = ft_atod(x) * ft_atod(x);
-
-		// 	free(x);
-		// }
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) {
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 
@@ -707,7 +694,7 @@ int		ft_check_sphere(char *string, t_primitive *p) {
 
 	printf("qwe");
 
-	p = add_sphere(A_PR, (t_vector) {0, 0, 0}, 1, 255 << 16);
+	p = add_sphere(A_PR, (t_vector) {0, 0, 0}, 1, 0xFFFFFF);
 
 	jsmn_parser parser;
 	jsmntok_t tokens[MAX_T];
@@ -761,20 +748,11 @@ int		ft_check_sphere(char *string, t_primitive *p) {
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "color") && tokens[i+1].size == 3) {
-			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
-			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
-			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
-
-			printf("sph_color x %f\n", ft_atod(x));
-			printf("sph_color y %f\n", ft_atod(y));
-			printf("sph_color z %f\n", ft_atod(z));
-
-			// primitive->color = color
-
+		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			p->color = ft_hex_to_int(x);
 			free(x);
-			free(y);
-			free(z);
 		}
 		if (!ft_strcmp(str, "size") && tokens[i].size == 1) {
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
@@ -889,12 +867,12 @@ int		ft_parse_JSON(char *filepath)
 	return (0);
 }
 
-int		ft_parser(void)
+char	*ft_parser(void)
 {
 	if (ft_parse_JSON(FILE_PATH))
 		printf("ERROR!!!!11");
 	else
 		printf("OK!");
 
-	return (0);
+	return (NULL);
 }

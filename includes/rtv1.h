@@ -281,6 +281,6 @@ int						count_fps(void);
 int						print_fps(float fps);
 
 
-int						ft_parser(void);
+char					*ft_parser(void);
 
 #endif
