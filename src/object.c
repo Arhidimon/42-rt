@@ -12,53 +12,53 @@
 
 #include "../includes/rtv1.h"
 
-void		next_obj(t_app *app)
+void		next_obj()
 {
-	if (app->curobjtype == PRIMITIVE && app->curobj->next)
-		app->curobj = app->curobj->next;
-	else if (app->curobjtype == LIGHT && app->curlobj->next)
-		app->curlobj = app->curlobj->next;
+	if (g_app->curobjtype == PRIMITIVE && g_app->curobj->next)
+		g_app->curobj = g_app->curobj->next;
+	else if (g_app->curobjtype == LIGHT && g_app->curlobj->next)
+		g_app->curlobj = g_app->curlobj->next;
 }
 
-void		prev_obj(t_app *app)
+void		prev_obj()
 {
-	if (app->curobjtype == PRIMITIVE && app->curobj->prev)
-		app->curobj = app->curobj->prev;
-	else if (app->curobjtype == LIGHT && app->curlobj->prev)
-		app->curlobj = app->curlobj->prev;
+	if (g_app->curobjtype == PRIMITIVE && g_app->curobj->prev)
+		g_app->curobj = g_app->curobj->prev;
+	else if (g_app->curobjtype == LIGHT && g_app->curlobj->prev)
+		g_app->curlobj = g_app->curlobj->prev;
 }
 
-t_vector	*get_curobj_pos(t_app *app)
+t_vector	*get_curobj_pos()
 {
-	if (app->curobjtype == CAMERA)
-		return (&(app->camera.position));
-	else if (app->curobjtype == LIGHT)
-		return (&(app->curlobj->vector));
-	else if (app->curobj->type == SPHERE)
-		return (&(app->curobj->p.sphere.position));
-	else if (app->curobj->type == CONE)
-		return (&(app->curobj->p.cone.position));
-	else if (app->curobj->type == PLANE)
-		return (&(app->curobj->p.plane.position));
+	if (g_app->curobjtype == CAMERA)
+		return (&(g_app->camera.position));
+	else if (g_app->curobjtype == LIGHT)
+		return (&(g_app->curlobj->vector));
+	else if (g_app->curobj->type == SPHERE)
+		return (&(g_app->curobj->p.sphere.position));
+	else if (g_app->curobj->type == CONE)
+		return (&(g_app->curobj->p.cone.position));
+	else if (g_app->curobj->type == PLANE)
+		return (&(g_app->curobj->p.plane.position));
 	else
-		return (&(app->curobj->p.cylinder.position));
+		return (&(g_app->curobj->p.cylinder.position));
 }
 
-t_vector	*get_curobj_dir(t_app *app)
+t_vector	*get_curobj_dir()
 {
-	if (app->curobjtype == CAMERA)
-		return (&(app->camera.direction));
-	else if (app->curobjtype == PRIMITIVE)
+	if (g_app->curobjtype == CAMERA)
+		return (&(g_app->camera.direction));
+	else if (g_app->curobjtype == PRIMITIVE)
 	{
-		if (app->curobj->type == SPHERE)
-			return (&(app->curobj->rotation));
-		else if (app->curobj->type == CONE)
-			return (&(app->curobj->rotation));
-		else if (app->curobj->type == PLANE)
-			return (&(app->curobj->p.plane.normal));
+		if (g_app->curobj->type == SPHERE)
+			return (&(g_app->curobj->rotation));
+		else if (g_app->curobj->type == CONE)
+			return (&(g_app->curobj->rotation));
+		else if (g_app->curobj->type == PLANE)
+			return (&(g_app->curobj->p.plane.normal));
 		else
-			return (&(app->curobj->rotation));
+			return (&(g_app->curobj->rotation));
 	}
 	else
-		return (&(app->curlobj->vector));
+		return (&(g_app->curlobj->vector));
 }

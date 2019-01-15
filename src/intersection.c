@@ -81,7 +81,7 @@ float		intersect_cone(t_primitive *primitive, t_ray *ray)
 	return ((t[0] > 0) ? t[0] : t[1]);
 }
 
-float		closest_intersection(t_app *app, t_ray *ray, float tmin,
+float		closest_intersection(t_ray *ray, float tmin,
 		t_primitive **object)
 {
 	float		closest_t;
@@ -91,7 +91,7 @@ float		closest_intersection(t_app *app, t_ray *ray, float tmin,
 
 	closest_t = INFINITY;
 	closest_obj = NULL;
-	current = app->scene.primitives;
+	current = g_app->scene.primitives;
 	while (current)
 	{
 		if ((current->type == SPHERE && INT_SPH) ||
