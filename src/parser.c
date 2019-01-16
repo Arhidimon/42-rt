@@ -537,14 +537,15 @@ int		ft_check_alight(char *string) {
 }
 
 int		ft_check_plight(char *string) {
-	int		i,t;
+	int		ant,i,t;
 	char	*str, *x, *y, *z;
-	double	intensity;
+	double	xx, yy, zz, intensity;
 
 	jsmn_parser parser;
 	jsmntok_t tokens[MAX_T];
 
 	i = 0;
+	ant = 0;
 	jsmn_init(&parser);
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
 
@@ -554,8 +555,15 @@ int		ft_check_plight(char *string) {
 		if (!ft_strcmp(str, "intensity") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-			intensity = ft_atod(x);
-			printf("pl_ x %f\n", ft_atod(x));
+			xx = ft_atod(x);
+			if (xx < 0 || xx > 1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			intensity = xx;
+			ant += 10;
 			free(x);
 		}
 		free(str);	
@@ -565,17 +573,27 @@ int		ft_check_plight(char *string) {
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
-		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3) 
+		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3)
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
 
-			add_point_light(&(g_app->scene.lights), (t_vector) {ft_atod(x), ft_atod(y), ft_atod(z)}, intensity);
-			printf("pl_pos x %f\n", ft_atod(x));
-			printf("pl_pos y %f\n", ft_atod(y));
-			printf("pl_pos z %f\n", ft_atod(z));
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
 
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+
+			add_point_light(&(g_app->scene.lights), (t_vector) {xx, yy, zz}, intensity);
+			ant += 20;
 
 			free(x);
 			free(y);
@@ -588,6 +606,8 @@ int		ft_check_plight(char *string) {
 
 	free(string);
 
+	if (ant != 30)
+		return (1);
 	return (0);
 }
 
