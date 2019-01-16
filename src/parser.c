@@ -508,31 +508,40 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 }
 
 int		ft_check_alight(char *string) {
-	int		i,t;
+	int		ant,i,t;
 	char	*str, *x;
+	double	xx;
 
 	jsmn_parser parser;
 	jsmntok_t tokens[MAX_T];
 
 	i = 0;
+	ant = 0;
 	jsmn_init(&parser);
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
-
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
 		if (!ft_strcmp(str, "intensity") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-			add_ambient_light(&(g_app->scene.lights), ft_atod(x));
+			xx = ft_atod(x);
+			if (xx < 0 || xx > 1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			add_ambient_light(&(g_app->scene.lights), xx);
+			ant += 10;
 			free(x);
-		}	
+		}
 		free(str);
 		i++;
 	}
-
 	free(string);
-
+	if (ant != 10)
+		return (1);
 	return (0);
 }
 
