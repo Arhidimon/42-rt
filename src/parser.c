@@ -622,6 +622,82 @@ int		ft_check_plight(char *string)
 	return (0);
 }
 
+int		ft_check_dlight(char *string) 
+{
+	int		ant,i,t;
+	char	*str, *x, *y, *z;
+	double	xx, yy, zz, intensity;
+
+	jsmn_parser parser;
+	jsmntok_t tokens[MAX_T];
+
+	i = 0;
+	ant = 0;
+	jsmn_init(&parser);
+	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
+	while(i < t) 
+	{
+		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
+		if (!ft_strcmp(str, "intensity") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+			if (xx < 0 || xx > 1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			intensity = xx;
+			ant += 10;
+			free(x);
+		}
+		free(str);	
+		i++;
+	}
+	i = 0;
+	while(i < t) 
+	{
+		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
+		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3)
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+
+			add_directional_light(&(g_app->scene.lights), (t_vector) {xx, yy, zz}, intensity);
+			ant += 20;
+
+			free(x);
+			free(y);
+			free(z);
+		}
+		
+		free(str);
+		i++;
+	}
+
+	free(string);
+
+	if (ant != 30)
+		return (1);
+	return (0);
+}
+
+
 int		ft_check_plane(char *string, t_primitive *p) 
 {
 	int		ant,i,t;
@@ -966,6 +1042,11 @@ int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
 		if (scene == 1 && !ft_strcmp(str, "ambient_light") && tokens[i+1].size == 1)
 		{
 			if (ft_check_alight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+				return (1);
+		}
+		if (scene == 1 && !ft_strcmp(str, "directional_light") && tokens[i+1].size == 2)
+		{
+			if (ft_check_dlight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 				return (1);
 		}
 		free(str);
