@@ -35,6 +35,17 @@
             "normal": [0, 1, 0]
         },
 
+        "cone": {
+            "pos": [-1, 0, 3],
+            "angle": 0.42,
+            "color": "0x0000FF",
+            "dir": [0.1, 0.2, 0.3],
+            "refl": 0.5,
+            "spec": 10,
+            "rot": [0, 1, 0],
+            "normal": [0, 1, 0]
+        },
+
         "point_light": {
             "pos": [5, 0, 0],
             "intensity": 1

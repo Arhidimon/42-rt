@@ -1033,6 +1033,181 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 	return (0);
 }
 
+int		ft_check_cone(char *string, t_primitive *p) 
+{
+	int		ant,i,t;
+	char	*str, *x, *y, *z;
+	double	xx, yy, zz;
+	jsmn_parser parser;
+	jsmntok_t tokens[MAX_T];
+
+	i = 0;
+	ant = 0;
+
+	p = add_cone(A_PR, (t_vector) {0, 0, 0}, (t_vector) {0, 0, 0}, 0xFFFFFF);
+	jsmn_init(&parser);
+	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
+	while(i < t) 
+	{
+		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
+		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3)
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+			p->p.cone.position = (t_vector) {xx, yy, zz};
+			ant += 10;
+
+			free(x);
+			free(y);
+			free(z);
+		}
+		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			printf("sph_dir x %f\n", ft_atod(x));
+			printf("sph_dir y %f\n", ft_atod(y));
+			printf("sph_dir z %f\n", ft_atod(z));
+			ant += 20;
+
+			free(x);
+			free(y);
+			free(z);
+		}
+		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 30;
+
+			free(x);
+			free(y);
+			free(z);
+		}
+		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			p->color = ft_hex_to_int(x);
+			ant += 40;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "angle") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+
+			xx = ft_atod(x);
+			if (xx < 0 || xx > 1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+
+			p->p.cone.angle = xx;
+			ant += 50;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+
+			xx = ft_atod(x);
+			if (xx < 0 || xx >= 1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			p->reflection = xx;
+			ant += 60;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+
+			xx = ft_atod(x);
+			if (xx < 0 && xx != -1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			p->specular = xx;
+			ant += 70;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			if ((xx < -1 || xx > 1) ||  (yy < -1 || yy > 1) || (zz < -1 || zz > 1))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+			p->p.cone.normal = (t_vector) {xx, yy, zz};
+			ant += 80;
+
+			free(x);
+			free(y);
+			free(z);
+		}
+		free(str);
+		i++;
+	}
+	free(string);
+
+	if (ant != 360)
+		return (1);
+	return (0);
+}
+
 int		ft_check_sphere(char *string, t_primitive *p) 
 {
 	int		ant,i,t;
@@ -1207,6 +1382,11 @@ int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
 		if (scene == 1 && !ft_strcmp(str, "cylinder") && tokens[i+1].size == 8)
 		{
 			if (ft_check_cylinder(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+				return (1);
+		}
+		if (scene == 1 && !ft_strcmp(str, "cone") && tokens[i+1].size == 8)
+		{
+			if (ft_check_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 				return (1);
 		}
 		if (scene == 1 && !ft_strcmp(str, "plane") && tokens[i+1].size == 7)
