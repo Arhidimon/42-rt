@@ -24,6 +24,17 @@
             "rot": [-180, 180, -180]
         },
 
+        "cylinder": {
+            "pos": [3, 0, 3],
+            "size": 1,
+            "color": "0xFFFFFF",
+            "dir": [0.1, 0.2, 0.3],
+            "refl": 0.5,
+            "spec": -1,
+            "rot": [180, 180, 180],
+            "normal": [0, 1, 0]
+        },
+
         "point_light": {
             "pos": [5, 0, 0],
             "intensity": 1
