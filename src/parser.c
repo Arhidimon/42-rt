@@ -421,14 +421,14 @@ char	*ft_read_file(char *filepath)
 
 	string = ft_strnew(1);
 	if ((fd = open(filepath, O_RDONLY)) < 0)
+	{
+		free(string);
 		return (NULL);
-		printf("%s", "adas");
+	}
 	while (get_next_line(fd, &line) > 0)
 	{
 		ptr = string;
-		// printf("line: %s\n", line);
 		string = ft_strjoin(string, line);
-		// printf("string: %s\n", string);
 		free(ptr);
 		free(line);
 	}
@@ -438,12 +438,13 @@ char	*ft_read_file(char *filepath)
 
 int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 {
-	int i, cam, att;
+	int i, cam, ant;
 	char *str, *attr, *x, *y, *z;
+	double	xx, yy, zz;
 
 	i = 0;
 	cam = 0;
-	att = 0;
+	ant = 0;
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
@@ -458,10 +459,21 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 					y = ft_strsub(string, tokens[i+5].start, tokens[i+5].end - tokens[i+5].start);
 					z = ft_strsub(string, tokens[i+6].start, tokens[i+6].end - tokens[i+6].start);
 
-					printf("pos x %f\n", ft_atod(x));
-					printf("pos y %f\n", ft_atod(y));
-					printf("pos z %f\n", ft_atod(z));
-					att++;
+					xx = ft_atod(x);
+					yy = ft_atod(y);
+					zz = ft_atod(z);
+
+					if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+					{
+						free(x);
+						free(y);
+						free(z);
+						free(str);
+						return (1);
+					}
+					/* ADD CAMERA */
+					ant += 10;
+
 					free(x);
 					free(y);
 					free(z);
@@ -478,7 +490,7 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 					printf("dir x %f\n", ft_atod(x));
 					printf("dir y %f\n", ft_atod(y));
 					printf("dir z %f\n", ft_atod(z));
-					att++;
+					ant += 20;
 					free(x);
 					free(y);
 					free(z);
@@ -490,7 +502,7 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 		free(str);
 		i++;
 	}
-	if (cam != 1 && att != 2)
+	if (cam != 1 || ant != 30)
 		return (1);
 	return (0);
 }
