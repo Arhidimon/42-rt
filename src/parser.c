@@ -507,7 +507,8 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 	return (0);
 }
 
-int		ft_check_alight(char *string) {
+int		ft_check_alight(char *string) 
+{
 	int		ant,i,t;
 	char	*str, *x;
 	double	xx;
@@ -545,7 +546,8 @@ int		ft_check_alight(char *string) {
 	return (0);
 }
 
-int		ft_check_plight(char *string) {
+int		ft_check_plight(char *string) 
+{
 	int		ant,i,t;
 	char	*str, *x, *y, *z;
 	double	xx, yy, zz, intensity;
@@ -620,9 +622,11 @@ int		ft_check_plight(char *string) {
 	return (0);
 }
 
-int		ft_check_plane(char *string, t_primitive *p) {
-	int		i,t;
+int		ft_check_plane(char *string, t_primitive *p) 
+{
+	int		ant,i,t;
 	char	*str, *x, *y, *z;
+	double	xx, yy, zz;
 
 	p = add_plane(A_PR, (t_vector) {0, 0, 0},
 			(t_vector) {0, 0, 0}, 0xFF00FF);
@@ -631,44 +635,64 @@ int		ft_check_plane(char *string, t_primitive *p) {
 	jsmntok_t tokens[MAX_T];
 
 	i = 0;
+	ant = 0;
 	jsmn_init(&parser);
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
-		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3) {
+		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3)
+		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
 
-			p->p.plane.position = (t_vector) {ft_atod(x), ft_atod(y), ft_atod(z)};
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
 
-			printf("plane_pos x %f\n", ft_atod(x));
-			printf("plane_pos y %f\n", ft_atod(y));
-			printf("plane_pos z %f\n", ft_atod(z));
-
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+			p->p.plane.position = (t_vector) {xx, yy, zz};
+			ant += 10;
 
 			free(x);
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3) {
+		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
+		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
 
-			p->p.plane.normal = (t_vector) {ft_atod(x), ft_atod(y), ft_atod(z)};
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
 
-			printf("plane_n x %f\n", ft_atod(x));
-			printf("plane_n y %f\n", ft_atod(y));
-			printf("plane_n z %f\n", ft_atod(z));
-
+			if ((xx < -1 || xx > 1) ||  (yy < -1 || yy > 1) || (zz < -1 || zz > 1))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+			p->p.plane.normal = (t_vector) {xx, yy, zz};
+			ant += 20;
 
 			free(x);
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) {
+		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
+		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
@@ -676,20 +700,33 @@ int		ft_check_plane(char *string, t_primitive *p) {
 			printf("plane_dir x %f\n", ft_atod(x));
 			printf("plane_dir y %f\n", ft_atod(y));
 			printf("plane_dir z %f\n", ft_atod(z));
+
+			ant += 30;
 			free(x);
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) {
+		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
+		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
 
-			printf("sph_rot x %f\n", ft_atod(x));
-			printf("sph_rot y %f\n", ft_atod(y));
-			printf("sph_rot z %f\n", ft_atod(z));
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
 
-			p->rotation = (t_vector){ft_atod(x), ft_atod(y), ft_atod(z)};
+			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			{
+				free(x);
+				free(y);
+				free(z);
+				free(str);
+				return (1);
+			}
+
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 40;
 
 			free(x);
 			free(y);
@@ -699,33 +736,51 @@ int		ft_check_plane(char *string, t_primitive *p) {
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			p->color = ft_hex_to_int(x);
-			free(x);
-		}
-		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) {
-			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
-			printf("plane_refl %f\n", ft_atod(x));
-			p->reflection = ft_atod(x);
+			ant += 50;
 
 			free(x);
 		}
-		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) {
+		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
+		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 
-			printf("plane_spec %f\n", ft_atod(x));
-			p->specular = ft_atod(x);
+			xx = ft_atod(x);
+			if (xx < 0 || xx >= 1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			p->reflection = xx;
+			ant += 60;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+
+			xx = ft_atod(x);
+			if (xx < 0 && xx != -1)
+			{
+				free(x);
+				free(str);
+				return (1);
+			}
+			p->specular = xx;
+			ant += 70;
 
 			free(x);
 		}
 		free(str);
 		i++;
 	}
-
 	free(string);
 
+	if (ant != 280)
+		return (1);
 	return (0);
 }
-
 
 int		ft_check_sphere(char *string, t_primitive *p) 
 {
@@ -768,7 +823,8 @@ int		ft_check_sphere(char *string, t_primitive *p)
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) {
+		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
+		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
@@ -782,7 +838,8 @@ int		ft_check_sphere(char *string, t_primitive *p)
 			free(y);
 			free(z);
 		}
-		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) {
+		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
+		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
 			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
@@ -815,7 +872,8 @@ int		ft_check_sphere(char *string, t_primitive *p)
 
 			free(x);
 		}
-		if (!ft_strcmp(str, "size") && tokens[i].size == 1) {
+		if (!ft_strcmp(str, "size") && tokens[i].size == 1) 
+		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 
 			xx = ft_atod(x);
@@ -832,7 +890,8 @@ int		ft_check_sphere(char *string, t_primitive *p)
 
 			free(x);
 		}
-		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) {
+		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
+		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 
 			xx = ft_atod(x);
@@ -847,7 +906,8 @@ int		ft_check_sphere(char *string, t_primitive *p)
 
 			free(x);
 		}
-		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) {
+		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
+		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 
 			xx = ft_atod(x);
@@ -865,7 +925,6 @@ int		ft_check_sphere(char *string, t_primitive *p)
 		free(str);
 		i++;
 	}
-
 	free(string);
 
 	if (ant != 280)
