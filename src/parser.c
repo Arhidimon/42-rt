@@ -1358,61 +1358,119 @@ int		ft_check_sphere(char *string, t_primitive *p)
 	return (0);
 }
 
-int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
+
+int		ft_check_objects(char *string) 
 {
-	int i;
-	int scene;
-	char *str;
-    t_primitive *p;
+	int		i,t;
+	char	*str;
+
+	t_primitive *p;
+	jsmn_parser parser;
+	jsmntok_t tokens[MAX_T];
+
+	i = 0;
+	jsmn_init(&parser);
+	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
 	g_app->scene.primitives = NULL;
 	g_app->scene.lights = NULL;
+	while(i < t) 
+	{
+		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
+		if (!ft_strcmp(str, "sphere"))
+		{
+			if (tokens[i+1].size != 7 || ft_check_sphere(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "cylinder"))
+		{
+			if (tokens[i+1].size != 8 || ft_check_cylinder(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "cone"))
+		{
+			if (tokens[i+1].size != 8 || ft_check_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "plane"))
+		{
+			if (tokens[i+1].size != 7 || ft_check_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "point_light"))
+		{
+			if (tokens[i+1].size != 2 || ft_check_plight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "ambient_light"))
+		{
+			if (tokens[i+1].size != 1 || ft_check_alight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "directional_light"))
+		{
+			if (tokens[i+1].size != 2 || ft_check_dlight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		free(str);
+		i++;
+	}
+	free(string);
+	return (0);
+}
+
+
+int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
+{
+	int i, scene;
+	char *str;
 
 	i = 0;
 	scene = 0;
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
-		if (!ft_strcmp(str, "scene"))
+		if (!ft_strcmp(str, "scene") && !scene)
+		{
+			if (ft_check_objects(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
 			scene++;
-		if (scene == 1 && !ft_strcmp(str, "sphere") && tokens[i+1].size == 7)
-		{
-			if (ft_check_sphere(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
-				return (1);
-		}
-		if (scene == 1 && !ft_strcmp(str, "cylinder") && tokens[i+1].size == 8)
-		{
-			if (ft_check_cylinder(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
-				return (1);
-		}
-		if (scene == 1 && !ft_strcmp(str, "cone") && tokens[i+1].size == 8)
-		{
-			if (ft_check_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
-				return (1);
-		}
-		if (scene == 1 && !ft_strcmp(str, "plane") && tokens[i+1].size == 7)
-		{
-			if (ft_check_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
-				return (1);
-		}
-		if (scene == 1 && !ft_strcmp(str, "point_light") && tokens[i+1].size == 2)
-		{
-			if (ft_check_plight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
-				return (1);
-		}
-		if (scene == 1 && !ft_strcmp(str, "ambient_light") && tokens[i+1].size == 1)
-		{
-			if (ft_check_alight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
-				return (1);
-		}
-		if (scene == 1 && !ft_strcmp(str, "directional_light") && tokens[i+1].size == 2)
-		{
-			if (ft_check_dlight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
-				return (1);
 		}
 		free(str);
 		i++;
 	}
-
+	free(string);
 	if (scene != 1)
 		return (1);
 	return (0);
