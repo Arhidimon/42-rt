@@ -24,7 +24,7 @@ LDFLAGS=$(PTHREAD) $(GTKLIB)  -lm -rdynamic
 
 SRCS_DIR    = ./src
 
-OBJECTS=main.o keyboard.o rotate.o light.o add_light.o add_primitive.o intersection.o trace.o vector.o render.o math.o  supersampling.o scenes.o object.o color.o  init.o
+OBJECTS=main.o keyboard.o rotate.o light.o add_light.o add_primitive.o intersection.o new_intersection.o trace.o vector.o render.o math.o  supersampling.o scenes.o object.o color.o  init.o
 #keyboard.o fps.o consoleout.o
 HEADERS = includes/
 

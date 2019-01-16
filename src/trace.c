@@ -28,6 +28,78 @@ int			reflection(t_ray *ray, t_vector n, int depth)
 	return (trace_ray(&rray, 0.001, depth - 1));
 }
 
+t_vector	get_normal_trian(t_primitive *primitive)
+{
+    t_vector	v1, v2, v3, a, b, c;
+	
+	if (primitive->type == TRIAN)
+	{	
+		v1 = (t_vector){(primitive->p.trian.position[0] - primitive->p.trian.radius),
+			(primitive->p.trian.position[1] - primitive->p.trian.radius), primitive->p.trian.position[2]};
+		v2 = (t_vector){(primitive->p.trian.position[0] + primitive->p.trian.radius),
+			(primitive->p.trian.position[1] - primitive->p.trian.radius), primitive->p.trian.position[2]};
+		v3 = (t_vector){(primitive->p.trian.position[0]),
+			(primitive->p.trian.position[1] + primitive->p.trian.radius), primitive->p.trian.position[2]};
+		a = v2 - v1;
+		b = v3 - v1;
+		c = normalize(vecros(a, b));
+		return (c);
+	}
+}
+
+t_vector	norm_box(t_primitive *primitive, t_ray *ray, float closest_t)
+{
+	t_vector localPoint = ray->position + mult_vector(normalize(ray->direction), closest_t);
+	float min = INFINITY;
+	t_vector norm;
+	float distance = fabs(primitive->p.box.radius - fabs(localPoint[0]));
+	if (distance < closest_t)
+	{
+		// printf("0==%f\n", localPoint[0]);
+		closest_t = distance;
+		// if (localPoint[0] <= 0)
+		// {
+		// 	printf("ssx");
+		// 	norm = (t_vector){0, 0, -1};
+		// }
+		// else
+			norm = (t_vector){0, 0, 1};
+		return (norm);
+	}
+	distance = fabs(primitive->p.box.radius - fabs(localPoint[1]));
+	if (distance < closest_t)
+	{
+		// printf("1==%f\n", localPoint[1]);
+		closest_t = distance;
+		// if (localPoint[1] <= 0)
+		// {
+		// 	printf("ssy");
+		// 	norm = (t_vector){-1, 0, 0};
+		// }
+		// else
+			norm = (t_vector){1, 0, 0};
+		return (norm);
+
+	}
+	distance = fabs(primitive->p.box.radius - fabs(localPoint[2]));
+	if (distance < closest_t)
+	{
+		// printf("2==%f\n", localPoint[2]);
+		closest_t = distance;
+		// if (localPoint[2] <= 0)
+		// {
+		// 	printf("ssz");
+		// 	norm = (t_vector){0, -1, 0};
+		// }
+		// else
+			norm = (t_vector){0, 1, 0};
+		return (norm);
+
+	}
+	// return (norm);
+	// return ((t_vector){0, 0, -1});
+}
+
 t_vector	get_normal(t_primitive *closest_obj, t_ray *ray,
 		float closest_t)
 {
@@ -41,6 +113,10 @@ t_vector	get_normal(t_primitive *closest_obj, t_ray *ray,
 	else if (closest_obj->type == CYLINDER)
 		g_app->tempvector = p - closest_obj->p.cylinder.position -
 				mult_vector(closest_obj->rotation, TEMP_M);
+	else if (closest_obj->type == TRIAN)
+		g_app->tempvector = normalize(closest_obj->p.trian.normal);
+	else if (closest_obj->type == BOX)
+		g_app->tempvector = norm_box(closest_obj, ray, closest_t);
 	else
 		g_app->tempvector = p - closest_obj->p.cone.position -
 				mult_vector(closest_obj->rotation,
@@ -51,11 +127,11 @@ t_vector	get_normal(t_primitive *closest_obj, t_ray *ray,
 
 int			get_text(t_primitive *obj, t_ray *ray, float clos_t)
 {
-	int			color;
-	float		u;
-	float		v;
-	t_vector	point;
-	t_vector	norm;
+	// int			color;
+	// float		u;
+	// float		v;
+	// t_vector	point;
+	// t_vector	norm;
 
 // 	if (obj->type == SPHERE)
 // 	{
