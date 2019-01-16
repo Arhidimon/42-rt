@@ -438,9 +438,9 @@ char	*ft_read_file(char *filepath)
 
 int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 {
-	int i, cam, ant;
-	char *str, *attr, *x, *y, *z;
-	double	xx, yy, zz;
+	int				i, cam, ant;
+	char			*str, *attr, *x, *y, *z;
+	double			xx, yy, zz;
 
 	i = 0;
 	cam = 0;
@@ -507,12 +507,11 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 
 int		ft_check_alight(char *string) 
 {
-	int		ant,i,t;
-	char	*str, *x;
-	double	xx;
-
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				ant,i,t;
+	char			*str, *x;
+	double			xx;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	ant = 0;
@@ -525,15 +524,16 @@ int		ft_check_alight(char *string)
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			xx = ft_atod(x);
+
+			free(x);
 			if (xx < 0 || xx > 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			add_ambient_light(&(g_app->scene.lights), xx);
 			ant += 10;
-			free(x);
 		}
 		free(str);
 		i++;
@@ -546,18 +546,16 @@ int		ft_check_alight(char *string)
 
 int		ft_check_plight(char *string) 
 {
-	int		ant,i,t;
-	char	*str, *x, *y, *z;
-	double	xx, yy, zz, intensity;
-
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz, intensity;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	ant = 0;
 	jsmn_init(&parser);
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
-
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
@@ -565,15 +563,16 @@ int		ft_check_plight(char *string)
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			xx = ft_atod(x);
+			
+			free(x);
 			if (xx < 0 || xx > 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			intensity = xx;
 			ant += 10;
-			free(x);
 		}
 		free(str);	
 		i++;
@@ -592,27 +591,22 @@ int		ft_check_plight(char *string)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
-			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
-			{
-				free(x);
-				free(y);
-				free(z);
-				free(str);
-				return (1);
-			}
-
-			add_point_light(&(g_app->scene.lights), (t_vector) {xx, yy, zz}, intensity);
-			ant += 20;
-
 			free(x);
 			free(y);
 			free(z);
+
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			add_point_light(&(g_app->scene.lights), (t_vector) {xx, yy, zz}, intensity);
+			ant += 20;
 		}
-		
 		free(str);
 		i++;
 	}
-
 	free(string);
 
 	if (ant != 30)
@@ -622,12 +616,11 @@ int		ft_check_plight(char *string)
 
 int		ft_check_dlight(char *string) 
 {
-	int		ant,i,t;
-	char	*str, *x, *y, *z;
-	double	xx, yy, zz, intensity;
-
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz, intensity;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	ant = 0;
@@ -640,15 +633,17 @@ int		ft_check_dlight(char *string)
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			xx = ft_atod(x);
+
+			free(x);
+
 			if (xx < 0 || xx > 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			intensity = xx;
 			ant += 10;
-			free(x);
 		}
 		free(str);	
 		i++;
@@ -667,27 +662,22 @@ int		ft_check_dlight(char *string)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
-			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
-			{
-				free(x);
-				free(y);
-				free(z);
-				free(str);
-				return (1);
-			}
-
-			add_directional_light(&(g_app->scene.lights), (t_vector) {xx, yy, zz}, intensity);
-			ant += 20;
-
 			free(x);
 			free(y);
 			free(z);
+
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			add_directional_light(&(g_app->scene.lights), (t_vector) {xx, yy, zz}, intensity);
+			ant += 20;
 		}
-		
 		free(str);
 		i++;
 	}
-
 	free(string);
 
 	if (ant != 30)
@@ -695,19 +685,16 @@ int		ft_check_dlight(char *string)
 	return (0);
 }
 
-
 int		ft_check_plane(char *string, t_primitive *p) 
 {
-	int		ant,i,t;
-	char	*str, *x, *y, *z;
-	double	xx, yy, zz;
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	p = add_plane(A_PR, (t_vector) {0, 0, 0},
 			(t_vector) {0, 0, 0}, 0xFF00FF);
-
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
-
 	i = 0;
 	ant = 0;
 	jsmn_init(&parser);
@@ -725,20 +712,18 @@ int		ft_check_plane(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+
 			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.plane.position = (t_vector) {xx, yy, zz};
 			ant += 10;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
 		{
@@ -750,20 +735,18 @@ int		ft_check_plane(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+
 			if ((xx < -1 || xx > 1) ||  (yy < -1 || yy > 1) || (zz < -1 || zz > 1))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.plane.normal = (t_vector) {xx, yy, zz};
 			ant += 20;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
 		{
@@ -790,21 +773,18 @@ int		ft_check_plane(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
-			{
-				free(x);
-				free(y);
-				free(z);
-				free(str);
-				return (1);
-			}
-
-			p->rotation = (t_vector){xx, yy, zz};
-			ant += 40;
-
 			free(x);
 			free(y);
 			free(z);
+
+			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 40;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
@@ -817,34 +797,34 @@ int		ft_check_plane(char *string, t_primitive *p)
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+			
 			if (xx < 0 || xx >= 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->reflection = xx;
 			ant += 60;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+
 			if (xx < 0 && xx != -1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->specular = xx;
 			ant += 70;
-
-			free(x);
 		}
 		free(str);
 		i++;
@@ -858,11 +838,11 @@ int		ft_check_plane(char *string, t_primitive *p)
 
 int		ft_check_cylinder(char *string, t_primitive *p) 
 {
-	int		ant,i,t;
-	char	*str, *x, *y, *z;
-	double	xx, yy, zz;
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	ant = 0;
@@ -882,20 +862,18 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+		
 			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.cylinder.position = (t_vector) {xx, yy, zz};
 			ant += 10;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
 		{
@@ -922,21 +900,18 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
-			{
-				free(x);
-				free(y);
-				free(z);
-				free(str);
-				return (1);
-			}
-
-			p->rotation = (t_vector){xx, yy, zz};
-			ant += 30;
-
 			free(x);
 			free(y);
 			free(z);
+	
+			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 30;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
@@ -949,52 +924,51 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 		if (!ft_strcmp(str, "size") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+				
+			free(x);
+
 			if (xx <= 0 || xx >= 1000)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
-
 			p->p.cylinder.radius = xx;
 			p->p.cylinder.radius2 = xx * xx;
 			ant += 50;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+
 			if (xx < 0 || xx >= 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->reflection = xx;
 			ant += 60;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+
 			if (xx < 0 && xx != -1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->specular = xx;
 			ant += 70;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
 		{
@@ -1006,20 +980,18 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+	
 			if ((xx < -1 || xx > 1) ||  (yy < -1 || yy > 1) || (zz < -1 || zz > 1))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.cylinder.normal = (t_vector) {xx, yy, zz};
 			ant += 80;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		free(str);
 		i++;
@@ -1033,15 +1005,14 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 
 int		ft_check_cone(char *string, t_primitive *p) 
 {
-	int		ant,i,t;
-	char	*str, *x, *y, *z;
-	double	xx, yy, zz;
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	ant = 0;
-
 	p = add_cone(A_PR, (t_vector) {0, 0, 0}, (t_vector) {0, 0, 0}, 0xFFFFFF);
 	jsmn_init(&parser);
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
@@ -1058,20 +1029,18 @@ int		ft_check_cone(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+	
 			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.cone.position = (t_vector) {xx, yy, zz};
 			ant += 10;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
 		{
@@ -1098,21 +1067,18 @@ int		ft_check_cone(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
-			{
-				free(x);
-				free(y);
-				free(z);
-				free(str);
-				return (1);
-			}
-
-			p->rotation = (t_vector){xx, yy, zz};
-			ant += 30;
-
 			free(x);
 			free(y);
 			free(z);
+	
+			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 30;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
@@ -1125,51 +1091,49 @@ int		ft_check_cone(char *string, t_primitive *p)
 		if (!ft_strcmp(str, "angle") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
-			if (xx < 0 || xx > 1)
-			{
-				free(x);
-				free(str);
-				return (1);
-			}
-
-			p->p.cone.angle = xx;
-			ant += 50;
 
 			free(x);
+			
+			if (xx < 0 || xx > 1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->p.cone.angle = xx;
+			ant += 50;
 		}
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+			free(x);
+			
 			if (xx < 0 || xx >= 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->reflection = xx;
 			ant += 60;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+			
 			if (xx < 0 && xx != -1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->specular = xx;
 			ant += 70;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
 		{
@@ -1181,20 +1145,18 @@ int		ft_check_cone(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+			
 			if ((xx < -1 || xx > 1) ||  (yy < -1 || yy > 1) || (zz < -1 || zz > 1))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.cone.normal = (t_vector) {xx, yy, zz};
 			ant += 80;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		free(str);
 		i++;
@@ -1208,11 +1170,11 @@ int		ft_check_cone(char *string, t_primitive *p)
 
 int		ft_check_sphere(char *string, t_primitive *p) 
 {
-	int		ant,i,t;
-	char	*str, *x, *y, *z;
-	double	xx, yy, zz;
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	ant = 0;
@@ -1232,20 +1194,18 @@ int		ft_check_sphere(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
+			free(x);
+			free(y);
+			free(z);
+		
 			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
 			{
-				free(x);
-				free(y);
-				free(z);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->p.sphere.position = (t_vector) {xx, yy, zz};
 			ant += 10;
-
-			free(x);
-			free(y);
-			free(z);
 		}
 		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
 		{
@@ -1272,21 +1232,18 @@ int		ft_check_sphere(char *string, t_primitive *p)
 			yy = ft_atod(y);
 			zz = ft_atod(z);
 
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
-			{
-				free(x);
-				free(y);
-				free(z);
-				free(str);
-				return (1);
-			}
-
-			p->rotation = (t_vector){xx, yy, zz};
-			ant += 30;
-
 			free(x);
 			free(y);
 			free(z);
+	
+			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 30;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
@@ -1299,52 +1256,51 @@ int		ft_check_sphere(char *string, t_primitive *p)
 		if (!ft_strcmp(str, "size") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+
 			if (xx <= 0 || xx >= 1000)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
-
 			p->p.sphere.radius = xx;
 			p->p.sphere.radius2 = xx * xx;
 			ant += 50;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+			
+			free(x);
+			
 			if (xx < 0 || xx >= 1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->reflection = xx;
 			ant += 60;
-
-			free(x);
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
-
 			xx = ft_atod(x);
+
+			free(x);
+			
 			if (xx < 0 && xx != -1)
 			{
-				free(x);
 				free(str);
+				free(string);
 				return (1);
 			}
 			p->specular = xx;
 			ant += 70;
-
-			free(x);
 		}
 		free(str);
 		i++;
@@ -1359,12 +1315,11 @@ int		ft_check_sphere(char *string, t_primitive *p)
 
 int		ft_check_objects(char *string) 
 {
-	int		i,t;
-	char	*str;
-
-	t_primitive *p;
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				i,t;
+	char			*str;
+	jsmntok_t		tokens[MAX_T];
+	t_primitive		*p;
+	jsmn_parser		parser;
 
 	i = 0;
 	jsmn_init(&parser);
@@ -1376,7 +1331,8 @@ int		ft_check_objects(char *string)
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
 		if (!ft_strcmp(str, "sphere"))
 		{
-			if (tokens[i+1].size != 7 || ft_check_sphere(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			if (tokens[i+1].size != 7 || 
+				ft_check_sphere(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1385,7 +1341,8 @@ int		ft_check_objects(char *string)
 		}
 		if (!ft_strcmp(str, "cylinder"))
 		{
-			if (tokens[i+1].size != 8 || ft_check_cylinder(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			if (tokens[i+1].size != 8 || 
+				ft_check_cylinder(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1394,7 +1351,8 @@ int		ft_check_objects(char *string)
 		}
 		if (!ft_strcmp(str, "cone"))
 		{
-			if (tokens[i+1].size != 8 || ft_check_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			if (tokens[i+1].size != 8 ||
+				ft_check_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1403,7 +1361,8 @@ int		ft_check_objects(char *string)
 		}
 		if (!ft_strcmp(str, "plane"))
 		{
-			if (tokens[i+1].size != 7 || ft_check_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			if (tokens[i+1].size != 7 ||
+				ft_check_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1412,7 +1371,8 @@ int		ft_check_objects(char *string)
 		}
 		if (!ft_strcmp(str, "point_light"))
 		{
-			if (tokens[i+1].size != 2 || ft_check_plight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			if (tokens[i+1].size != 2 || 
+				ft_check_plight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 			{
 				free(str);
 				free(string);
@@ -1421,7 +1381,8 @@ int		ft_check_objects(char *string)
 		}
 		if (!ft_strcmp(str, "ambient_light"))
 		{
-			if (tokens[i+1].size != 1 || ft_check_alight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			if (tokens[i+1].size != 1 || 
+				ft_check_alight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 			{
 				free(str);
 				free(string);
@@ -1430,7 +1391,8 @@ int		ft_check_objects(char *string)
 		}
 		if (!ft_strcmp(str, "directional_light"))
 		{
-			if (tokens[i+1].size != 2 || ft_check_dlight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			if (tokens[i+1].size != 2 || 
+				ft_check_dlight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 			{
 				free(str);
 				free(string);
@@ -1447,21 +1409,24 @@ int		ft_check_objects(char *string)
 
 int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
 {
-	int i, scene;
-	char *str;
+	int		i, scene;
+	char	*str;
 
 	i = 0;
 	scene = 0;
 	while(i < t) 
 	{
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
-		if (!ft_strcmp(str, "scene") && !scene)
+		if (!ft_strcmp(str, "scene"))
 		{
-			if (ft_check_objects(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+			if (!scene)
 			{
-				free(str);
-				free(string);
-				return (1);
+				if (ft_check_objects(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+				{
+					free(str);
+					free(string);
+					return (1);
+				}
 			}
 			scene++;
 		}
@@ -1469,38 +1434,33 @@ int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
 		i++;
 	}
 	free(string);
-	if (scene != 1)
+
+	if (scene > 1)
 		return (1);
 	return (0);
 }
 
 int		ft_parse_JSON(char *filepath)
 {
-	int		i;
-	int		t;
-	char	*string;
-
-	//jsmn
-	jsmn_parser parser;
-	jsmntok_t tokens[MAX_T];
+	int				i;
+	int				t;
+	char			*string;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
 
 	i = 0;
 	if (!(string = ft_read_file(filepath)))
 		return (1);
-
-	printf("JSON: %s\n", string);
-
-
 	jsmn_init(&parser);
+	printf("JSON: %s\n", string);
 	// string - pointer to JSON string
 	// tokens - an array of tokens available
 	// MAX_T - number of tokens available
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
-	// if (ft_check_camera(string, tokens, t) || ft_check_camera_attr(string, tokens, t))
-	if (ft_check_camera(string, tokens, t) || ft_check_scene(string, tokens, t))
-	{
+
+	if (ft_check_camera(string, tokens, t) || 
+		ft_check_scene(string, tokens, t))
 		return (1);
-	}
 	
 	return (0);
 }
