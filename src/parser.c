@@ -463,23 +463,20 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 					yy = ft_atod(y);
 					zz = ft_atod(z);
 
-					if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
-					{
-						free(x);
-						free(y);
-						free(z);
-						free(str);
-						return (1);
-					}
-					/* ADD CAMERA */
-					ant += 10;
-
 					free(x);
 					free(y);
 					free(z);
+
+					if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+					{
+						free(attr);
+						free(str);
+						return (1);
+					}
+					g_app->camera.position = (t_vector) {xx, yy, zz};
+					ant += 10;
 				}
 				free(attr);
-
 				attr = ft_strsub(string, tokens[i+7].start, tokens[i+7].end - tokens[i+7].start);
 				if (!ft_strcmp(attr, "dir") && tokens[i+8].size == 3)
 				{
@@ -490,6 +487,7 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 					printf("dir x %f\n", ft_atod(x));
 					printf("dir y %f\n", ft_atod(y));
 					printf("dir z %f\n", ft_atod(z));
+					g_app->camera.direction = (t_vector) {0, 0, 0};
 					ant += 20;
 					free(x);
 					free(y);
