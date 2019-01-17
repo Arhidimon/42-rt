@@ -97,7 +97,9 @@ float		closest_intersection(t_ray *ray, float tmin,
 		if ((current->type == SPHERE && INT_SPH) ||
 		(current->type == PLANE && INT_PL) ||
 		(current->type == CYLINDER && INT_CYL) ||
-		(current->type == CONE && INT_CON))
+		(current->type == CONE && INT_CON) ||
+		(current->type == TRIAN && INT_TRI) ||
+		(current->type == BOX && INT_BOX))
 		{
 			closest_obj = current;
 			closest_t = t;

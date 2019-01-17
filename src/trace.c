@@ -28,6 +28,34 @@ int			reflection(t_ray *ray, t_vector n, int depth)
 	return (trace_ray(&rray, 0.001, depth - 1));
 }
 
+t_vector	norm_box(t_primitive *primitive, t_ray *ray, float closest_t)
+{
+	t_vector localPoint;
+	t_vector norm;
+	float distance;
+	int i;
+
+	i = -1;
+	localPoint = ray->position + mult_vector(normalize(ray->direction),
+		closest_t);
+	while (++i < 3)
+	{
+		distance = fabs(primitive->p.box.radius - fabs(localPoint[i]));
+		if (distance < closest_t)
+		{
+			closest_t = distance;
+			if (i == 0)
+				norm = (t_vector){0, 0, 1};
+			if (i == 1)
+				norm = (t_vector){1, 0, 0};
+			if (i == 2)
+				norm = (t_vector){0, 1, 0};
+			return (norm);
+		}
+	}
+	return (norm);
+}
+
 t_vector	get_normal(t_primitive *closest_obj, t_ray *ray,
 		float closest_t)
 {
@@ -41,6 +69,10 @@ t_vector	get_normal(t_primitive *closest_obj, t_ray *ray,
 	else if (closest_obj->type == CYLINDER)
 		g_app->tempvector = p - closest_obj->p.cylinder.position -
 				mult_vector(closest_obj->rotation, TEMP_M);
+	else if (closest_obj->type == TRIAN)
+		g_app->tempvector = normalize(closest_obj->p.trian.normal);
+	else if (closest_obj->type == BOX)
+		g_app->tempvector = norm_box(closest_obj, ray, closest_t);
 	else
 		g_app->tempvector = p - closest_obj->p.cone.position -
 				mult_vector(closest_obj->rotation,
@@ -51,11 +83,11 @@ t_vector	get_normal(t_primitive *closest_obj, t_ray *ray,
 
 int			get_text(t_primitive *obj, t_ray *ray, float clos_t)
 {
-	int			color;
-	float		u;
-	float		v;
-	t_vector	point;
-	t_vector	norm;
+	// int			color;
+	// float		u;
+	// float		v;
+	// t_vector	point;
+	// t_vector	norm;
 
 // 	if (obj->type == SPHERE)
 // 	{

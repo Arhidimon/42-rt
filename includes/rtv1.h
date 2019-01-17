@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 14:32:18 by dbezruch          #+#    #+#             */
-/*   Updated: 2018/10/22 15:58:06 by dbezruch         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:33:15 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define INT_PL (t=intersect_plane(current,ray))>tmin&&t<closest_t
 # define INT_CON (t=intersect_cone(current,ray))>tmin&&t<closest_t
 # define INT_CYL (t=intersect_cylinder(current,ray))>tmin&&t<closest_t
+# define INT_TRI (t=intersect_trian(current,ray))>tmin&&t<closest_t
+# define INT_BOX (t=intersect_box(current,ray))>tmin&&t<closest_t
 
 # define TM1 ray->direction,mult_vector(closest_obj->rotation,closest_t)
 # define TC1 ray->position-closest_obj->p.cylinder.position
@@ -55,8 +57,7 @@
 # include <unistd.h>
 # include <stdint.h>
 # include <stdlib.h>
-#include <gtk/gtk.h>
-
+# include <gtk/gtk.h>
 
 typedef float			t_vector __attribute__((vector_size(sizeof(float)*4)));
 typedef float			t_roots __attribute__((vector_size(sizeof(float)*2)));
@@ -73,8 +74,9 @@ typedef enum			e_primitive_type
 	PLANE,
 	SPHERE,
 	CYLINDER,
-	CONE
-
+	CONE,
+	TRIAN,
+	BOX
 }						t_primitive_type;
 
 typedef enum			e_object_type
@@ -119,12 +121,37 @@ typedef struct			s_cone
 	float				angle;
 }						t_cone;
 
+typedef struct			s_trian
+{
+	t_vector			position;
+	t_vector			a;
+	t_vector			b;
+	t_vector			c;
+	t_vector			a1;
+	t_vector			b1;
+	t_vector			c1;
+	t_vector			normal;
+	float				radius;
+	float				radius2;
+}						t_trian;
+
+typedef struct			s_box
+{
+	t_vector			position;
+	t_vector			a;
+	t_vector			b;
+	float				radius;
+	float				radius2;
+}						t_box;
+
 typedef	union			u_params
 {
 	t_plane				plane;
 	t_sphere			sphere;
 	t_cylinder			cylinder;
 	t_cone				cone;
+	t_trian				trian;
+	t_box				box;
 }						t_params;
 
 typedef struct			s_primitive
@@ -202,9 +229,9 @@ typedef struct			s_app
 
 	GtkWidget			*progressbar;
 	GtkWidget			*window;
-    GtkWidget			*da;
-    GtkWidget			*opendialog;
-    GtkBuilder			*builder;
+	GtkWidget			*da;
+	GtkWidget			*opendialog;
+	GtkBuilder			*builder;
 }						t_app;
 
 extern t_app *g_app;
@@ -214,6 +241,10 @@ t_vector				rotate_0x(t_vector vector, float angle);
 t_vector				rotate_0y(t_vector vector, float angle);
 t_vector				rotate_0z(t_vector vector, float angle);
 t_vector				rotate(t_vector rotation, t_vector vector);
+t_vector				vecros(t_vector a, t_vector b);
+t_vector				get_normal_trian(t_primitive *primitive);
+t_vector				vecros(t_vector a, t_vector b);
+t_primitive				*add_primitive(t_primitive **primitives);
 
 float					calc_magnitude(t_vector *p);
 
@@ -225,6 +256,8 @@ void					add_point_light(t_light **lights, t_vector vector,
 void					add_ambient_light(t_light **lights, float intensity);
 void					add_directional_light(t_light **lights,
 						t_vector vector, float intensity);
+float					max(float x, float y);
+float					min(float x, float y);
 
 t_primitive				*add_sphere(t_primitive **primitives, t_vector position,
 						float radius, int color);
@@ -235,9 +268,15 @@ t_primitive				*add_cylinder(t_primitive **primitives, t_ray pnr,
 						int color);
 t_primitive				*add_cone(t_primitive **primitives, t_vector position,
 						t_vector normal, int color);
+t_primitive				*add_trian(t_primitive **primitives, t_vector position,
+						float radius, int color);
+t_primitive				*add_box(t_primitive **primitives, t_vector position,
+						float radius, int color);
 
 float					closest_intersection(t_ray *ray, float tmin,
 						t_primitive **object);
+float					intersect_box(t_primitive *primitive, t_ray *ray);
+float					intersect_trian(t_primitive *primitive, t_ray *ray);
 
 int						trace_ray(t_ray *ray, float min, int depth);
 
@@ -256,7 +295,6 @@ void					render(void);
 t_roots					solve_qe(float a, float b, float c);
 
 void					ssaa(void);
-
 
 void					key_handler1(void);
 

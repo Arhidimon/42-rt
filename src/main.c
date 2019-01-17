@@ -14,8 +14,8 @@
 #include <stdlib.h>
 #include "../includes/rtv1.h"
 
-#define WIDTH 300
-#define HEIGHT 300
+#define WIDTH 600
+#define HEIGHT 600
 #define BPS 8
 
 t_app *g_app;

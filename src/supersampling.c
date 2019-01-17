@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 21:25:52 by dbezruch          #+#    #+#             */
-/*   Updated: 2018/05/12 21:25:53 by dbezruch         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:41:43 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		ssaacalc(int x, int y, int temp)
 	return (rgb_to_int(r / SS_SQ, g / SS_SQ, b / SS_SQ));
 }
 
-void	ssaa()
+void	ssaa(void)
 {
 	int x;
 	int y;

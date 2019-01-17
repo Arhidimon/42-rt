@@ -14,7 +14,7 @@
 
 static	guint g_key = 0;
 
-void	key_handler3()
+void	key_handler3(void)
 {
 	if (g_key == GDK_KEY_Home)
 		g_app->curobjtype = (g_app->curobjtype == LIGHT ? CAMERA :
@@ -27,14 +27,14 @@ void	key_handler3()
 	else if (g_key == GDK_KEY_Page_Up)
 		prev_obj();
 	else if (g_key == GDK_KEY_z)
-		g_app->curobj = add_plane(&(g_app->scene.primitives), (t_vector) {0, 0, 0},
-				(t_vector) {0, 1, 0}, rand() % 0xFFFFFF);
+		g_app->curobj = add_plane(&(g_app->scene.primitives),
+			(t_vector){0, 0, 0}, (t_vector) {0, 1, 0}, rand() % 0xFFFFFF);
 	else if (g_key == GDK_KEY_x)
-		g_app->curobj = add_cone(&(g_app->scene.primitives), (t_vector) {0, 0, 0},
-				(t_vector) {0, 1, 0}, rand() % 0xFFFFFF);
+		g_app->curobj = add_cone(&(g_app->scene.primitives),
+			(t_vector){0, 0, 0}, (t_vector) {0, 1, 0}, rand() % 0xFFFFFF);
 	else if (g_key == GDK_KEY_c)
-		g_app->curobj = add_cylinder(&(g_app->scene.primitives), (t_ray){{0, 0, 0},
-		{0, 1, 0}}, 1, rand() % 0xFFFFFF);
+		g_app->curobj = add_cylinder(&(g_app->scene.primitives),
+			(t_ray){{0, 0, 0}, {0, 1, 0}}, 1, rand() % 0xFFFFFF);
 	else if (g_key == GDK_KEY_b)
 		g_app->curobj = add_sphere(&(g_app->scene.primitives),
 				(t_vector) {0, 0, 0}, 1, rand() % 0xFFFFFF);
@@ -42,7 +42,7 @@ void	key_handler3()
 	//render();
 }
 
-void	key_handler2()
+void	key_handler2(void)
 {
 	if (g_key == GDK_KEY_w)
 		(*(get_curobj_dir()))[0] -= CAMERA_ROTATE;
@@ -69,7 +69,7 @@ void	key_handler2()
 	//render();
 }
 
-void	key_handler1()
+void	key_handler1(void)
 {
 	if (g_key == GDK_KEY_Left)
 		*(get_curobj_pos()) -= rotate(g_app->camera.direction,
