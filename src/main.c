@@ -61,6 +61,8 @@ void menu_open(GtkMenuItem *menuitem, gpointer user_data)
 		filename = gtk_file_chooser_get_filename (chooser);
 		free_scene();
 		ft_parser(filename);
+		g_app->curobj = g_app->scene.primitives;
+		g_app->curlobj = g_app->scene.lights;
 		render();
 		g_free (filename);
 	}
