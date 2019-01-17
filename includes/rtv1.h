@@ -244,6 +244,7 @@ t_vector				rotate(t_vector rotation, t_vector vector);
 t_vector				vecros(t_vector a, t_vector b);
 t_vector				get_normal_trian(t_primitive *primitive);
 t_vector				vecros(t_vector a, t_vector b);
+t_primitive				*add_primitive(t_primitive **primitives);
 
 float					calc_magnitude(t_vector *p);
 
@@ -269,6 +270,10 @@ t_primitive				*add_cone(t_primitive **primitives, t_vector position,
 						t_vector normal, int color);
 t_primitive				*add_trian(t_primitive **primitives, t_vector position, t_vector normal,
 						float radius, int color);
+t_primitive				*add_box(t_primitive **primitives, t_vector position,
+						float radius, int color);
+t_primitive				*add_trian(t_primitive **primitives, t_vector position,
+						t_vector normal, float radius, int color);
 t_primitive				*add_box(t_primitive **primitives, t_vector position,
 						float radius, int color);
 

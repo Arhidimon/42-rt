@@ -101,10 +101,6 @@ float		closest_intersection(t_ray *ray, float tmin,
 		(current->type == TRIAN && INT_TRI) ||
 		(current->type == BOX && INT_BOX))
 		{
-			// if (current->type == TRIAN)
-			// 	t = intersect_trian(current, ray);
-			// else if (current->type == BOX)
-			// 	t = intersect_box(current, ray);
 			closest_obj = current;
 			closest_t = t;
 		}
