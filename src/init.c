@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:49:26 by dbezruch          #+#    #+#             */
-/*   Updated: 2018/09/30 13:49:28 by dbezruch         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:22:45 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,16 @@ void	initialize_app(void)
 void	initialize_gtk(void)
 {
 	gtk_init(0, NULL);
-    g_app->builder = gtk_builder_new();
-    gtk_builder_add_from_file(g_app->builder, "glade/window_main.glade", NULL);
- 
-    g_app->window = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "window_main"));
-    g_app->progressbar = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "progressbar"));
-    g_app->da = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "darea"));
-    g_app->opendialog = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "opendialog"));
-
-    gtk_builder_connect_signals(g_app->builder, NULL);
-   
- 
-    g_object_unref(g_app->builder);
- 	
-    gtk_widget_show(g_app->window);
+	g_app->builder = gtk_builder_new();
+	gtk_builder_add_from_file(g_app->builder, "glade/window_main.glade", NULL);
+	g_app->window =
+		GTK_WIDGET(gtk_builder_get_object(g_app->builder, "window_main"));
+	g_app->progressbar =
+		GTK_WIDGET(gtk_builder_get_object(g_app->builder, "progressbar"));
+	g_app->da = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "darea"));
+	g_app->opendialog =
+		GTK_WIDGET(gtk_builder_get_object(g_app->builder, "opendialog"));
+	gtk_builder_connect_signals(g_app->builder, NULL);
+	g_object_unref(g_app->builder);
+	gtk_widget_show(g_app->window);
 }
