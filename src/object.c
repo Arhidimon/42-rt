@@ -40,6 +40,10 @@ t_vector	*get_curobj_pos(void)
 		return (&(g_app->curobj->p.cone.position));
 	else if (g_app->curobj->type == PLANE)
 		return (&(g_app->curobj->p.plane.position));
+	else if (g_app->curobj->type == TRIAN)
+		return (&(g_app->curobj->p.trian.position));
+	else if (g_app->curobj->type == BOX)
+		return (&(g_app->curobj->p.box.position));
 	else
 		return (&(g_app->curobj->p.cylinder.position));
 }
@@ -56,6 +60,8 @@ t_vector	*get_curobj_dir(void)
 			return (&(g_app->curobj->rotation));
 		else if (g_app->curobj->type == PLANE)
 			return (&(g_app->curobj->p.plane.normal));
+		else if (g_app->curobj->type == TRIAN)
+			return (&(g_app->curobj->p.trian.normal));
 		else
 			return (&(g_app->curobj->rotation));
 	}
