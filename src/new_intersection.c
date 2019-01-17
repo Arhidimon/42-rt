@@ -12,141 +12,103 @@
 
 #include "../includes/rtv1.h"
 
-double		max(double x, double y)
+void		position_tri(t_primitive *primitive)
 {
-	if (x > y)
-		return (x);
-	return (y);
+	t_vector	lol;
+	t_vector	tri_rot;
+
+	primitive->p.trian.a = (t_vector){(0 - primitive->p.trian.radius2), (0 -
+		primitive->p.trian.radius2), 0 + 0.0001};
+	primitive->p.trian.b = (t_vector){(0 + primitive->p.trian.radius2), (0 -
+		primitive->p.trian.radius2), 0 + 0.0001};
+	primitive->p.trian.c = (t_vector){0, (0 + primitive->p.trian.radius2),
+		0 + 0.0001};
+	lol = (t_vector){primitive->p.trian.normal[0], primitive->p.trian.normal[1],
+		primitive->p.trian.normal[2] - 1};
+	tri_rot[2] = 0;
+	tri_rot[0] = (float)atan2(-lol[1], sqrt(lol[0] * lol[0] + lol[2] * lol[2]));
+	tri_rot[1] = (float)atan2(lol[0], lol[2]);
+	primitive->p.trian.a = rotate(tri_rot, primitive->p.trian.a) +
+		primitive->p.trian.position;
+	primitive->p.trian.b = rotate(tri_rot, primitive->p.trian.b) +
+		primitive->p.trian.position;
+	primitive->p.trian.c = rotate(tri_rot, primitive->p.trian.c) +
+		primitive->p.trian.position;
 }
 
-double		min(double x, double y)
+void		position_box(t_primitive *primitive)
 {
-	if (x < y)
-		return (x);
-	return (y);
+	primitive->p.box.a = (t_vector){(primitive->p.box.position[0]),
+		(primitive->p.box.position[1]), primitive->p.box.position[2]};
+	primitive->p.box.b = (t_vector){(primitive->p.box.position[0] +
+		primitive->p.box.radius2), (primitive->p.box.position[1] +
+		primitive->p.box.radius2), primitive->p.box.position[2] +
+		primitive->p.box.radius2};
 }
 
-t_vector		vecros(t_vector a, t_vector b)
+t_vector	vect(t_primitive *primitive, t_vector p, int i)
 {
-	t_vector resss;
-
-	resss = (t_vector){a[1] * b[2] - a[2] * b[1], a[1] * b[0] - a[0] * b[2], a[0] *
-		b[1] - a[1] * b[0]};
-	return (resss);
-}
-t_vector		vecscale(double tmp, t_vector v1)
-{
-	t_vector v;
-
-	v = (t_vector){tmp * v1[0], tmp * v1[1], tmp * v1[2]};
-	return (v);
-}
-
-t_vector		vectadd(t_vector v1, t_vector v2)
-{
-	t_vector result;
-
-	result = (t_vector){v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]};
-	return (result);
+	if (i == 1)
+		return (vecros(primitive->p.trian.b - primitive->p.trian.a, p -
+		primitive->p.trian.a));
+	else if (i == 2)
+		return (vecros(primitive->p.trian.c - primitive->p.trian.b, p -
+		primitive->p.trian.b));
+	else if (i == 3)
+		return (vecros(primitive->p.trian.a - primitive->p.trian.c, p -
+		primitive->p.trian.c));
 }
 
 float		intersect_trian(t_primitive *primitive, t_ray *ray)
 {
-	t_vector	v0, v1, v2, v0v1, v0v2, pvec;
-    float t0, t;
-	float EPSILON = 1e-8;
-	v0 = (t_vector){(primitive->p.trian.position[0] - primitive->p.trian.radius),
-		(primitive->p.trian.position[1] - primitive->p.trian.radius), primitive->p.trian.position[2]};
-	v1 = (t_vector){(primitive->p.trian.position[0] + primitive->p.trian.radius),
-		(primitive->p.trian.position[1] - primitive->p.trian.radius), primitive->p.trian.position[2]};
-	v2 = (t_vector){(primitive->p.trian.position[0]), (primitive->p.trian.position[1]
-		+ primitive->p.trian.radius), primitive->p.trian.position[2]};
-	// v0 = (t_vector){-1, -1, -1};
-	// v1 = (t_vector){1, -1, -1};
-	// v2 = (t_vector){0, 1, -1};
-	// c = normalize(primitive->p.trian.normal);//get_normal_trian(primitive);
-	v0v1 = v1 - v0;
-	v0v2 = v2 - v0;
-	// c = normalize(vecros(a, b));
-	pvec = vecros((ray->direction), v0v2);
-	float det = ((dotproduct(v0v1, pvec)));
-	// printf("%f\n", det);
-	if (fabs(det) < EPSILON)
-	 	return (INFINITY);
-	 float invDet = 1 / det;
-	 t_vector tvec = ray->position - v0;
-	 float u = dotproduct(tvec, pvec) * invDet;
-	 if (u < 0 || u > 1)
-	 	return (INFINITY);
-	 t_vector qvec = vecros(tvec, v0v1);
-	 float v = (dotproduct(ray->direction, qvec)) * invDet;
-	// printf("%f\n", invDet);
-	 if (v < 0 || u + v > 1)
-	 	return (INFINITY);
-	 t = dotproduct(v0v2, qvec) * invDet;
-	 return (t);
-	// float denom = dotproduct(c, c);
-	// float h2 = dotproduct(c, ray->direction);
-	// // h2 = fabs(h2);
-	// if (h2 < EPSILON )
-	// 	return (INFINITY);
-	// float d = dotproduct(c, v1);
-	// float t1 = fabs((dotproduct(c, ray->position) + d) / h2);
-	// if (t1 < 0)
-	// 	return (INFINITY);
-	// t_vector p = vectadd(ray->position , vecscale(t1, ray->direction));
-	// t_vector edge0 = v2 - v1;
-	// t_vector vp0 = p - v1;
-	// t_vector c1 = vecros(edge0, vp0);
-	// float test = (dotproduct(c, c1));
-	// if (test < 0)
-	// 	return (INFINITY);
-	// t_vector edge1 = v3 - v2;
-	// t_vector vp1 = p - v2;
-	// c1 = vecros(edge1, vp1);
-	// float test1 = dotproduct(c, c1);
-	// if (test1 < 0)
-	// 	return (INFINITY);
-	// t_vector edge2 = v1 - v3;
-	// t_vector vp2 = p - v3;
-	// c1 = vecros(edge2, vp2);
-	// test = dotproduct(c, c1);
-	// if (test < 0)
-	// 	return (INFINITY);
-	// t0 = test1 / denom;
-	// t = test / denom;
-	// return ((t0 > 0) ? t0 : t);
+	t_vector	c[3];
+	t_roots		t;
+	float		test[4];
+
+	position_tri(primitive);
+	c[0] = normalize(primitive->p.trian.normal);
+	if ((test[0] = dotproduct(c[0], ray->direction)) < 1e-8)
+		return (INFINITY);
+	test[2] = fabs((dotproduct(c[0], ray->position) + dotproduct(c[0],
+		primitive->p.trian.a)) / test[0]);
+	if (test[2] < 0)
+		return (INFINITY);
+	c[1] = ray->position + mult_vector(ray->direction, test[2]);
+	c[2] = vect(primitive, c[1], 1);
+	if ((test[2] = dotproduct(c[0], c[2])) < 0)
+		return (INFINITY);
+	c[2] = vect(primitive, c[1], 2);
+	if ((test[1] = dotproduct(c[0], c[2])) < 0)
+		return (INFINITY);
+	c[2] = vect(primitive, c[1], 3);
+	if ((test[2] = dotproduct(c[0], c[2])) < 0)
+		return (INFINITY);
+	t[0] = test[1] / dotproduct(c[0], c[0]);
+	t[1] = test[2] / dotproduct(c[0], c[0]);
+	return ((t[0] > 0) ? t[0] : t[1]);
 }
 
 float		intersect_box(t_primitive *primitive, t_ray *ray)
 {
-	t_vector dirfrac;
-	t_vector	lb;
-	t_vector	rt;
+	t_vector	dirfrac;
 	float		t[6];
 	t_roots		t1;
-	int s[3];
 
-	lb = (t_vector){(primitive->p.box.position[0]),
-		(primitive->p.box.position[1]), primitive->p.box.position[2]};
-	rt = (t_vector){(primitive->p.box.position[0] + primitive->p.box.radius2),
-		(primitive->p.box.position[1] + primitive->p.box.radius2), primitive->p.box.position[2] + primitive->p.box.radius2};
+	position_box(primitive);
 	dirfrac[0] = (1 / ray->direction[0]);
 	dirfrac[1] = (1 / ray->direction[1]);
 	dirfrac[2] = (1 / ray->direction[2]);
-	t[0] = (lb[0] - ray->position[0]) * dirfrac[0];
-	t[1] = (rt[0] - ray->position[0]) * dirfrac[0];
-	t[2] = (lb[1] - ray->position[1]) * dirfrac[1];
-	t[3] = (rt[1] - ray->position[1]) * dirfrac[1];
-	t[4] = (lb[2] - ray->position[2]) * dirfrac[2];
-	t[5] = (rt[2] - ray->position[2]) * dirfrac[2];
-	t1[0] = max(max(min(t[0], t[1]), min(t[2], t[3])), min(t[4], t[5]));
-	t1[1] = min(min(max(t[0], t[1]), max(t[2], t[3])), max(t[4], t[5]));
+	t[0] = (primitive->p.box.a[0] - ray->position[0]) * dirfrac[0];
+	t[1] = (primitive->p.box.b[0] - ray->position[0]) * dirfrac[0];
+	t[2] = (primitive->p.box.a[1] - ray->position[1]) * dirfrac[1];
+	t[3] = (primitive->p.box.b[1] - ray->position[1]) * dirfrac[1];
+	t[4] = (primitive->p.box.a[2] - ray->position[2]) * dirfrac[2];
+	t[5] = (primitive->p.box.b[2] - ray->position[2]) * dirfrac[2];
+	t1[0] = max(max(min(min(t[0], t[1]), INFINITY), min(min(t[2], t[3]),
+		INFINITY)), min(min(t[4], t[5]), INFINITY));
+	t1[1] = min(min(max(max(t[0], t[1]), -INFINITY), max(max(t[2], t[3]),
+		-INFINITY)), max(max(t[4], t[5]), -INFINITY));
 	if (t1[1] < 1e-8 || t1[0] >= t1[1] || t1[0] < 1e-8)
 		return (INFINITY);
-	// printf("%f\n", t1[0]);
-	// return ((t1[0] >= 0) ? t1[0] : t1[1]);
-	// if (t1[0] > t1[1])
-	// 	return (t1[1]);
-	return (t1[0] >= 0);
+	return ((t1[0] >= 0) ? t1[0] : t1[1]);
 }

@@ -60,6 +60,12 @@ void	testscene_2()
 	p = add_cylinder(A_PR, (t_ray){{0, 0, 0}, {0, 1, 0}}, 1, 255);
 	p->reflection = 0;
 	p->specular = 10;
+	p = add_cone(A_PR, (t_vector) {0, 1, 0}, (t_vector) {0, 1, 0}, 255);
+	p->reflection = 0.0;
+	p->specular = 10;
+	 p = add_trian(A_PR, (t_vector) {0, 0, 15}, (t_vector) {0, 0, 1}, 1, 255);
+	p->reflection = 0.0;
+	p->specular = 100;
 	add_ambient_light(&(g_app->scene.lights), 0.4);
 	add_point_light(&(g_app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
 }
@@ -85,6 +91,9 @@ void	testscene_3()
 	p = add_cylinder(A_PR, (t_ray){{0, 0, 0}, {0, 1, 0}}, 1, 255);
 	p->reflection = 0;
 	p->specular = 10;
+	p = add_box(A_PR, (t_vector) {-1, 0, 0}, 1, 0xFF00FF);
+	p->reflection = 0.0;
+	p->specular = 100;
 	add_point_light(&(g_app->scene.lights), (t_vector) {5, 0, 1}, 0.4);
 	p = add_cone(A_PR, (t_vector) {0, 1, 0}, (t_vector) {0, 1, 0}, 255);
 	p->reflection = 0.0;
@@ -116,6 +125,12 @@ void	testscene_3()
 // 	add_ambient_light(&(g_app->scene.lights), 0.4);
 // 	p->specular = -1;
 // 	p->reflection = 0.5;
+// 	p = add_box(A_PR, (t_vector) {-1, 0, 0}, 1, 255);
+// 	p->reflection = 0.0;
+// 	p->specular = 100;
+// 		p = add_trian(A_PR, (t_vector) {1, 1, -5}, (t_vector) {0, 0, 1}, 1, 255);
+// 	p->reflection = 0.0;
+// 	p->specular = 100;
 // }
 void	testscene_4()
 {
@@ -123,16 +138,27 @@ void	testscene_4()
 
 	g_app->scene.primitives = NULL;
 	g_app->scene.lights = NULL;
-	// add_point_light(&(g_app->scene.lights), (t_vector) {-5, 5, -5}, 0.5);
-	add_directional_light(&(g_app->scene.lights), (t_vector) {0, 0, -15}, 0.8);
-	// add_ambient_light(&(g_app->scene.lights), 1);
-	// p = add_trian(A_PR, (t_vector) {0, 0, 5}, (t_vector) {0, 0, 1}, 1, 255);
-	// p->reflection = 0.0;
-	// p->specular = 100;
-	p = add_box(A_PR, (t_vector) {-1, 0, 0}, 1, 255);
+	// add_point_light(&(g_app->scene.lights), (t_vector) {0, 5, -5}, 0.5);
+	// add_directional_light(&(g_app->scene.lights), (t_vector) {0, 0, -15}, 0.8);
+	add_ambient_light(&(g_app->scene.lights), 0.2);
+	p = add_trian(A_PR, (t_vector) {1, 1, -1}, (t_vector) {0, 0, 1}, 1, 255);
 	p->reflection = 0.0;
 	p->specular = 100;
-	// p = add_plane(A_PR, (t_vector) {0, -2, 0},
+	// p = add_cone(A_PR, (t_vector) {0, 1, 0}, (t_vector) {0, 1, 0}, 255);
+	// p->reflection = 0.0;
+	// p->specular = 10;
+	// p = add_cylinder(A_PR, (t_ray){{0, 0, 0}, {0, 1, 0}}, 1, 255);
+	// p->reflection = 0;
+	// p->specular = 10;
+	// p = add_box(A_PR, (t_vector) {-1, 0, 0}, 1, 255);
+	// p->reflection = 0.0;
+	// p->specular = 100;
+	// p = add_plane(A_PR, (t_vector) {0, 0, -1}, (t_vector) {0, 1, 0}, 0xFF00FF);
+	// p->reflection = 0.2;
+	// p = add_box(A_PR, (t_vector) {1, 0, 0}, 1, 0xFF00FF);
+	// p->reflection = 0.0;
+	// p->specular = 100;
+	// p = add_plane(A_PR, (t_vector) {0, 0, 0},
 	// 	(t_vector) {0, 1, 0}, 0xFF00FF);
 	// p->reflection = 0.5;
 	// p->specular = 1;

@@ -27,6 +27,7 @@
 # define INT_CON (t=intersect_cone(current,ray))>tmin&&t<closest_t
 # define INT_CYL (t=intersect_cylinder(current,ray))>tmin&&t<closest_t
 # define INT_TRI (t=intersect_trian(current,ray))>tmin&&t<closest_t
+# define INT_BOX (t=intersect_box(current,ray))>tmin&&t<closest_t
 
 # define TM1 ray->direction,mult_vector(closest_obj->rotation,closest_t)
 # define TC1 ray->position-closest_obj->p.cylinder.position
@@ -124,6 +125,12 @@ typedef struct			s_cone
 typedef struct			s_trian
 {
 	t_vector			position;
+	t_vector			a;
+	t_vector			b;
+	t_vector			c;
+	t_vector			a1;
+	t_vector			b1;
+	t_vector			c1;
 	t_vector			normal;
 	float				radius;
 	float				radius2;
@@ -132,6 +139,8 @@ typedef struct			s_trian
 typedef struct			s_box
 {
 	t_vector			position;
+	t_vector			a;
+	t_vector			b;
 	float				radius;
 	float				radius2;
 }						t_box;
@@ -234,6 +243,7 @@ t_vector				rotate_0z(t_vector vector, float angle);
 t_vector				rotate(t_vector rotation, t_vector vector);
 t_vector				vecros(t_vector a, t_vector b);
 t_vector				get_normal_trian(t_primitive *primitive);
+t_vector				vecros(t_vector a, t_vector b);
 
 float					calc_magnitude(t_vector *p);
 
@@ -245,6 +255,8 @@ void					add_point_light(t_light **lights, t_vector vector,
 void					add_ambient_light(t_light **lights, float intensity);
 void					add_directional_light(t_light **lights,
 						t_vector vector, float intensity);
+float					max(float x, float y);
+float					min(float x, float y);
 
 t_primitive				*add_sphere(t_primitive **primitives, t_vector position,
 						float radius, int color);

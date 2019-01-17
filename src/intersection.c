@@ -98,12 +98,13 @@ float		closest_intersection(t_ray *ray, float tmin,
 		(current->type == PLANE && INT_PL) ||
 		(current->type == CYLINDER && INT_CYL) ||
 		(current->type == CONE && INT_CON) ||
-		(current->type == TRIAN) || (current->type == BOX))
+		(current->type == TRIAN && INT_TRI) ||
+		(current->type == BOX && INT_BOX))
 		{
-			if (current->type == TRIAN)
-				t = intersect_trian(current, ray);
-			else if (current->type == BOX)
-				t = intersect_box(current, ray);
+			// if (current->type == TRIAN)
+			// 	t = intersect_trian(current, ray);
+			// else if (current->type == BOX)
+			// 	t = intersect_box(current, ray);
 			closest_obj = current;
 			closest_t = t;
 		}
