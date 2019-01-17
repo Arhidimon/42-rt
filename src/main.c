@@ -123,8 +123,7 @@ int main(int argc, char *argv[])
 	
     gtk_init(&argc, &argv);
  	initialize_app();
-		// testscene_3();
-		ft_parser();
+		testscene_4();
 	g_app->curobj = g_app->scene.primitives;
 	g_app->curlobj = g_app->scene.lights;
 	
