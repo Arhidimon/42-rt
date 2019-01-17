@@ -41,7 +41,6 @@
             "spec": 10,
             "rot": [0, 1, 0]
         },
-
         "point_light": {
             "pos": [5, 0, 0],
             "intensity": 1
