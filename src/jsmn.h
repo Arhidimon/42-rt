@@ -5,6 +5,9 @@
 #define FILE_PATH "test.json"
 
 #include <stddef.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include "../includes/rtv1.h"
 #include "../libft/includes/libft.h"
 
