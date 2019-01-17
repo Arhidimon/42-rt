@@ -38,7 +38,7 @@ void	key_handler3()
 	else if (g_key == GDK_KEY_b)
 		g_app->curobj = add_sphere(&(g_app->scene.primitives),
 				(t_vector) {0, 0, 0}, 1, rand() % 0xFFFFFF);
-	printf("Type %i, obj %p, light %p\n", g_app->curobjtype, g_app->curobj, g_app->curlobj);//
+	g_stoprendering = 1;
 	render();
 }
 

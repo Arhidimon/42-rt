@@ -19,10 +19,31 @@
 #define BPS 8
 
 t_app *g_app;
+char g_stoprendering;
 
 void menu_open (GtkMenuItem *menuitem, gpointer user_data)
 {
-	gtk_widget_set_visible (g_app->opendialog, TRUE);
+	GtkWidget *dialog;
+	GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	gint res;
+
+	dialog = gtk_file_chooser_dialog_new ("Open File", g_app->window,
+                                      action, "_Cancel", GTK_RESPONSE_CANCEL,
+                                      "_Open", GTK_RESPONSE_ACCEPT,
+                                      NULL);
+
+res = gtk_dialog_run (GTK_DIALOG (dialog));
+	printf("%i\n", res);
+if (res == GTK_RESPONSE_ACCEPT)
+  {
+    char *filename;
+    GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+    filename = gtk_file_chooser_get_filename (chooser);
+    printf("%s\n", filename);
+    g_free (filename);
+  }
+
+gtk_widget_destroy (dialog);
 }
 
 gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
@@ -59,6 +80,8 @@ gboolean draw_rt(GtkWidget *widget, cairo_t *cr, gpointer data)
 		x++;
 	}
 	GdkPixbuf  *scpixbuf = gdk_pixbuf_scale_simple(pixbuf, width, height, GDK_INTERP_NEAREST);
+	//GdkPixbuf  *scpixbuf;
+	//gdk_pixbuf_scale (pixbuf, scpixbuf,0,0, width, height, 0, 0, 1 , 1, GDK_INTERP_NEAREST);
   gdk_cairo_set_source_pixbuf(cr, scpixbuf, 0, 0);
     cairo_paint(cr);
     g_object_unref(G_OBJECT(scpixbuf));
@@ -118,29 +141,13 @@ gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data)
 int main(int argc, char *argv[])
 { 
     time_t t;
+    
     srand((unsigned) time(&t));
- 
-	
-    gtk_init(&argc, &argv);
  	initialize_app();
-		testscene_4();
+	testscene_4();
 	g_app->curobj = g_app->scene.primitives;
 	g_app->curlobj = g_app->scene.lights;
-	
-    g_app->builder = gtk_builder_new();
-    gtk_builder_add_from_file(g_app->builder, "glade/window_main.glade", NULL);
- 
-    g_app->window = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "window_main"));
-    g_app->progressbar = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "progressbar"));
-    g_app->da = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "darea"));
-    g_app->opendialog = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "opendialog"));
-
-    gtk_builder_connect_signals(g_app->builder, NULL);
-   
- 
-    g_object_unref(g_app->builder);
- 	
-    gtk_widget_show(g_app->window);
+	initialize_gtk();
     render();              
     gtk_main();
  

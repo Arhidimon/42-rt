@@ -208,6 +208,7 @@ typedef struct			s_app
 }						t_app;
 
 extern t_app *g_app;
+extern char g_stoprendering;
 
 t_vector				rotate_0x(t_vector vector, float angle);
 t_vector				rotate_0y(t_vector vector, float angle);
@@ -276,7 +277,7 @@ void					printinfoheader(void);
 void					clearinfo(void);
 void					initialize_app(void);
 int						handle_sdl_error(void);
-int						initialize_sdl(void);
+void					initialize_gtk(void);
 int						count_fps(void);
 int						print_fps(float fps);
 

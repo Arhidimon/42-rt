@@ -33,3 +33,21 @@ void	initialize_app(void)
 	g_app->curobjtype = CAMERA;
 }
 
+void	initialize_gtk(void)
+{
+	gtk_init(0, NULL);
+    g_app->builder = gtk_builder_new();
+    gtk_builder_add_from_file(g_app->builder, "glade/window_main.glade", NULL);
+ 
+    g_app->window = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "window_main"));
+    g_app->progressbar = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "progressbar"));
+    g_app->da = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "darea"));
+    g_app->opendialog = GTK_WIDGET(gtk_builder_get_object(g_app->builder, "opendialog"));
+
+    gtk_builder_connect_signals(g_app->builder, NULL);
+   
+ 
+    g_object_unref(g_app->builder);
+ 	
+    gtk_widget_show(g_app->window);
+}

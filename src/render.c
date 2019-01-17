@@ -30,7 +30,7 @@ void		render()
 	t_ray		ray;
 	t_vector	d;
 
-	gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar, 0);
+	g_stoprendering = 0;
 	x = -1;
 	while (++x < SCREEN_WIDTH *g_app->screen.ssvalue)
 	{
@@ -45,6 +45,8 @@ void		render()
 			g_app->screen.sspixels[x + y * SCREEN_WIDTH *g_app->screen.ssvalue] =
 					trace_ray(&ray, 1,g_app->iterations);
 		}
+		if (g_stoprendering)
+			return;
 		gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar, (double)x / (SCREEN_WIDTH *g_app->screen.ssvalue));
 		while (g_main_context_iteration(NULL, FALSE));		
 	}
