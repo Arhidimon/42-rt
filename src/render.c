@@ -23,32 +23,41 @@ t_vector	canvas_to_viewport(int x, int y)
 	return (v);
 }
 
-void		render()
+void		render_helper(int x)
+{
+	int			y;
+	t_vector	d;
+	t_ray		ray;
+
+	y = -1;
+	while (++y < SCREEN_HEIGHT * g_app->screen.ssvalue)
+	{
+		d = rotate(g_app->camera.direction, canvas_to_viewport(
+			x - SCREEN_WIDTH * g_app->screen.ssvalue / 2,
+				SCREEN_HEIGHT * g_app->screen.ssvalue / 2 - y));
+		ray.position = g_app->camera.position;
+		ray.direction = d;
+		g_app->screen.sspixels[x + y * SCREEN_WIDTH * g_app->screen.ssvalue] =
+		trace_ray(&ray, 1, g_app->iterations);
+	}
+}
+
+void		render(void)
 {
 	int			x;
-	int			y;
-	t_ray		ray;
-	t_vector	d;
 
 	g_stoprendering = 0;
 	x = -1;
 	while (++x < SCREEN_WIDTH * g_app->screen.ssvalue)
 	{
-		y = -1;
-		while (++y < SCREEN_HEIGHT * g_app->screen.ssvalue)
-		{
-			d = rotate(g_app->camera.direction, canvas_to_viewport(
-				x - SCREEN_WIDTH *g_app->screen.ssvalue / 2,
-					SCREEN_HEIGHT *g_app->screen.ssvalue / 2 - y));
-			ray.position = g_app->camera.position;
-			ray.direction = d;
-			g_app->screen.sspixels[x + y * SCREEN_WIDTH * g_app->screen.ssvalue] =
-					trace_ray(&ray, 1, g_app->iterations);
-		}
+		render_helper(x);
 		if (g_stoprendering)
-			return;
-		gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar, (double)x / (SCREEN_WIDTH * g_app->screen.ssvalue));
-		while (g_main_context_iteration(NULL, FALSE));		
+			return ;
+		gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar,
+		(double)x / (SCREEN_WIDTH * g_app->screen.ssvalue));
+		while (g_main_context_iteration(NULL, FALSE))
+		{
+		}
 	}
 	ssaa();
 	gtk_widget_queue_draw(g_app->da);

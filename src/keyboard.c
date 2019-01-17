@@ -39,7 +39,6 @@ void	key_handler3(void)
 		g_app->curobj = add_sphere(&(g_app->scene.primitives),
 				(t_vector) {0, 0, 0}, 1, rand() % 0xFFFFFF);
 	g_stoprendering = 1;
-	//render();
 }
 
 void	key_handler2(void)
@@ -66,7 +65,6 @@ void	key_handler2(void)
 		TOGGLE(g_app->light);
 	else
 		key_handler3();
-	//render();
 }
 
 void	key_handler1(void)
@@ -91,7 +89,6 @@ void	key_handler1(void)
 									(t_vector) {0, 0, CAMERA_MOVE});
 	else
 		key_handler2();
-	//render();
 }
 
 void	key_handler(guint key_sc)
