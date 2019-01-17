@@ -21,7 +21,7 @@ t_primitive		*add_trian(t_primitive **primitives, t_vector position,
 	primitive->rotation = (t_vector){0, 1, 0};
 	primitive->type = TRIAN;
 	primitive->p.trian.position = position;
-	primitive->p.trian.normal = normal;
+	primitive->p.trian.normal = (t_vector){0, 0, 1};
 	primitive->p.trian.radius = radius;
 	primitive->p.trian.radius2 = radius * radius;
 	primitive->reflection = 0.0;
