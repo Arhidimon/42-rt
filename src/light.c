@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 15:42:11 by dbezruch          #+#    #+#             */
-/*   Updated: 2018/06/29 15:42:14 by dbezruch         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:25:45 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ float	computelight(t_vector p, t_vector n, t_vector v)
 					g_app->curl->vector);
 			ray.direction = l;
 			ray.position = p;
-			if (shadow(p, g_app->curl, ray) && ((g_app->curl = g_app->curl->next)
+			if (shadow(p, g_app->curl, ray) &&
+					((g_app->curl = g_app->curl->next)
 			|| 1))
 				continue;
 			i += computeshine(l, n, v);
