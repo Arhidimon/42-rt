@@ -358,7 +358,7 @@ double	ft_atod(const char *str)
 	return (sign * out);
 }
 
-int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
+int		jsmn_cam(char *string, jsmntok_t *tokens, int t)
 {
 	int				i, cam, ant;
 	char			*str, *attr, *x, *y, *z;
@@ -427,7 +427,7 @@ int		ft_check_camera(char *string, jsmntok_t *tokens, int t)
 	return (0);
 }
 
-int		ft_check_alight(char *string) 
+int		jsmn_al(char *string) 
 {
 	int				ant,i,t;
 	char			*str, *x;
@@ -466,7 +466,7 @@ int		ft_check_alight(char *string)
 	return (0);
 }
 
-int		ft_check_plight(char *string) 
+int		jsmn_pl(char *string) 
 {
 	int				ant,i,t;
 	char			*str, *x, *y, *z;
@@ -536,7 +536,7 @@ int		ft_check_plight(char *string)
 	return (0);
 }
 
-int		ft_check_dlight(char *string) 
+int		jsmn_dl(char *string) 
 {
 	int				ant,i,t;
 	char			*str, *x, *y, *z;
@@ -607,7 +607,7 @@ int		ft_check_dlight(char *string)
 	return (0);
 }
 
-int		ft_check_plane(char *string, t_primitive *p) 
+int		jsmn_plane(char *string, t_primitive *p) 
 {
 	int				ant,i,t;
 	char			*str, *x, *y, *z;
@@ -758,7 +758,7 @@ int		ft_check_plane(char *string, t_primitive *p)
 	return (0);
 }
 
-int		ft_check_cylinder(char *string, t_primitive *p) 
+int		jsmn_cyl(char *string, t_primitive *p) 
 {
 	int				ant,i,t;
 	char			*str, *x, *y, *z;
@@ -925,7 +925,7 @@ int		ft_check_cylinder(char *string, t_primitive *p)
 	return (0);
 }
 
-int		ft_check_cone(char *string, t_primitive *p) 
+int		jsmn_cone(char *string, t_primitive *p) 
 {
 	int				ant,i,t;
 	char			*str, *x, *y, *z;
@@ -1090,7 +1090,7 @@ int		ft_check_cone(char *string, t_primitive *p)
 	return (0);
 }
 
-int		ft_check_sphere(char *string, t_primitive *p) 
+int		jsmn_sph(char *string, t_primitive *p) 
 {
 	int				ant,i,t;
 	char			*str, *x, *y, *z;
@@ -1235,7 +1235,7 @@ int		ft_check_sphere(char *string, t_primitive *p)
 }
 
 
-int		ft_check_objects(char *string) 
+int		jsmn_obj(char *string) 
 {
 	int				i,t;
 	char			*str;
@@ -1254,7 +1254,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "sphere"))
 		{
 			if (tokens[i+1].size != 7 || 
-				ft_check_sphere(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+				jsmn_sph(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1264,7 +1264,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "cylinder"))
 		{
 			if (tokens[i+1].size != 8 || 
-				ft_check_cylinder(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+				jsmn_cyl(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1274,7 +1274,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "cone"))
 		{
 			if (tokens[i+1].size != 8 ||
-				ft_check_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+				jsmn_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1284,7 +1284,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "plane"))
 		{
 			if (tokens[i+1].size != 7 ||
-				ft_check_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+				jsmn_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
@@ -1294,7 +1294,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "point_light"))
 		{
 			if (tokens[i+1].size != 2 || 
-				ft_check_plight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+				jsmn_pl(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 			{
 				free(str);
 				free(string);
@@ -1304,7 +1304,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "ambient_light"))
 		{
 			if (tokens[i+1].size != 1 || 
-				ft_check_alight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+				jsmn_al(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 			{
 				free(str);
 				free(string);
@@ -1314,7 +1314,7 @@ int		ft_check_objects(char *string)
 		if (!ft_strcmp(str, "directional_light"))
 		{
 			if (tokens[i+1].size != 2 || 
-				ft_check_dlight(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+				jsmn_dl(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 			{
 				free(str);
 				free(string);
@@ -1329,7 +1329,7 @@ int		ft_check_objects(char *string)
 }
 
 
-int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
+int		jsmn_sc(char *string, jsmntok_t *tokens, int t)
 {
 	int		i, scene;
 	char	*str;
@@ -1343,7 +1343,7 @@ int		ft_check_scene(char *string, jsmntok_t *tokens, int t)
 		{
 			if (!scene)
 			{
-				if (ft_check_objects(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
+				if (jsmn_obj(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start)))
 				{
 					free(str);
 					free(string);

@@ -47,7 +47,6 @@ char	*ft_strncpy(char *dst, const char *src, size_t len)
 	return (dst);
 }
 
-
 void	ft_bzero(void *s, size_t n)
 {
 	size_t i;
@@ -361,7 +360,7 @@ char	*ft_read_file(char *filepath)
 	return (string);
 }
 
-int		ft_parse_JSON(char *filepath)
+int		ft_parse_json(char *filepath)
 {
 	int				i;
 	int				t;
@@ -374,16 +373,14 @@ int		ft_parse_JSON(char *filepath)
 	i = 0;
 	jsmn_init(&parser);
 	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
-	if (ft_check_camera(string, tokens, t) || 
-		ft_check_scene(string, tokens, t))
+	if (jsmn_cam(string, tokens, t) || jsmn_sc(string, tokens, t))
 		return (1);
-	
 	return (0);
 }
 
 char	*ft_parser(void)
 {
-	if (ft_parse_JSON(FILE_PATH))
+	if (ft_parse_json(FILE_PATH))
 	{
 		printf("ERROR!!!!11");
 		return ("Hello!");

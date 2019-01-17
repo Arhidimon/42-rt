@@ -72,18 +72,17 @@ typedef struct {
 /**
  * Create JSON parser over an array of tokens
  */
-void jsmn_init(jsmn_parser *parser);
-
-int		ft_check_scene(char *string, jsmntok_t *tokens, int t);
-int		ft_check_objects(char *string);
-int		ft_check_sphere(char *string, t_primitive *p);
-int		ft_check_cone(char *string, t_primitive *p);
-int		ft_check_cylinder(char *string, t_primitive *p);
-int		ft_check_plane(char *string, t_primitive *p);
-int		ft_check_dlight(char *string);
-int		ft_check_plight(char *string);
-int		ft_check_alight(char *string);
-int		ft_check_camera(char *string, jsmntok_t *tokens, int t);
+void	jsmn_init(jsmn_parser *parser);
+int		jsmn_sc(char *string, jsmntok_t *tokens, int t);
+int		jsmn_obj(char *string);
+int		jsmn_sph(char *string, t_primitive *p);
+int		jsmn_cone(char *string, t_primitive *p);
+int		jsmn_cyl(char *string, t_primitive *p);
+int		jsmn_plane(char *string, t_primitive *p);
+int		jsmn_dl(char *string);
+int		jsmn_pl(char *string);
+int		jsmn_al(char *string);
+int		jsmn_cam(char *string, jsmntok_t *tokens, int t);
 
 /**
  * Run JSON parser. It parses a JSON data string into and array of tokens, each describing
