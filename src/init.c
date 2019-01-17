@@ -22,7 +22,7 @@ void	initialize_app(void)
 			* SCREEN_HEIGHT) * g_app->screen.ssvalue * g_app->screen.ssvalue);
 	g_app->scene.rays = malloc(sizeof(t_ray) * (int)(SCREEN_WIDTH
 			* SCREEN_HEIGHT));
-	g_app->camera.position = (t_vector) {0, 0, -3};
+	g_app->camera.position = (t_vector) {0, 0, -5};
 	g_app->camera.fov = FOV;
 	g_app->camera.direction = (t_vector) {0, 0, 0};
 	g_app->iterations = MAX_ITERS;

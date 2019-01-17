@@ -34,3 +34,26 @@ t_roots		solve_qe(float a, float b, float c)
 	else
 		return ((t_roots){NAN, NAN});
 }
+
+float		max(float x, float y)
+{
+	if (x > y)
+		return (x);
+	return (y);
+}
+
+float		min(float x, float y)
+{
+	if (x < y)
+		return (x);
+	return (y);
+}
+
+t_vector		vecros(t_vector a, t_vector b)
+{
+	t_vector resss;
+
+	resss = (t_vector){a[1] * b[2] - a[2] * b[1], a[1] * b[0] - a[0] * b[2], a[0] *
+		b[1] - a[1] * b[0]};
+	return (resss);
+}
