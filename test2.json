@@ -1,0 +1,29 @@
+{
+    "camera": {
+        "pos": [0, 0, -3],
+        "dir": [0, 0, 0]
+    },
+    "scene": {
+        "sphere": {
+            "pos": [0, 0, 3],
+            "size": 1,
+            "color": "0xFF0000",
+            "refl": 0.5,
+            "spec": 1,
+            "rot": [0, 1, 0]
+        },
+
+        "point_light": {
+            "pos": [5, 0, 0],
+            "intensity": 1
+        },
+
+        "point_light": {
+            "pos": [-5, 5, -5],
+            "intensity": 0.4
+        },
+        "ambient_light": {
+            "intensity": 0.4
+        }
+    }
+}

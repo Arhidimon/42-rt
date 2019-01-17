@@ -281,6 +281,7 @@ void					initialize_gtk(void);
 int						count_fps(void);
 int						print_fps(float fps);
 
+void					free_scene();
 
 char					*ft_parser(char *filepath);
 

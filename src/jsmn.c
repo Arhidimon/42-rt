@@ -692,7 +692,7 @@ int		jsmn_plane(char *string, t_primitive *p)
 			free(y);
 			free(z);
 
-			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
+			if (((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
@@ -804,7 +804,7 @@ int		jsmn_cyl(char *string, t_primitive *p)
 			free(y);
 			free(z);
 	
-			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
+			if (((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
@@ -956,7 +956,7 @@ int		jsmn_cone(char *string, t_primitive *p)
 			free(y);
 			free(z);
 	
-			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
+			if (((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
@@ -1106,7 +1106,7 @@ int		jsmn_sph(char *string, t_primitive *p)
 			free(y);
 			free(z);
 
-			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
+			if (((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);

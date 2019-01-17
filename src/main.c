@@ -60,7 +60,8 @@ if (res == GTK_RESPONSE_ACCEPT)
     char *filename;
     GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
     filename = gtk_file_chooser_get_filename (chooser);
-    printf("%s\n", filename);
+    if (ft_parser(filename) == NULL)
+    	render();
     g_free (filename);
   }
 
@@ -156,6 +157,7 @@ gboolean keypress (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
   	key_handler(event->keyval);
   	key_handler1();
+  	render();
     return TRUE;
 }
 
@@ -165,10 +167,10 @@ int main(int argc, char *argv[])
     
     srand((unsigned) time(&t));
  	initialize_app();
-	//testscene_4();
+	testscene_5();
 	//free_scene();
-	testscene_4();
-	//ft_parser();
+	//testscene_4();
+	
 	g_app->curobj = g_app->scene.primitives;
 	g_app->curlobj = g_app->scene.lights;
 	initialize_gtk();
