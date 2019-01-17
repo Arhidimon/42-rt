@@ -23,9 +23,11 @@ t_vector	canvas_to_viewport(int x, int y)
 	return (v);
 }
 
-void		render_helper(int x, t_ray *ray, t_vector *d)
+void		render_helper(int x)
 {
-	int y;
+	int			y;
+	t_vector	d;
+	t_ray		ray;
 
 	y = -1;
 	while (++y < SCREEN_HEIGHT * g_app->screen.ssvalue)
@@ -44,14 +46,12 @@ void		render(void)
 {
 	int			x;
 	int			y;
-	t_ray		ray;
-	t_vector	d;
 
 	g_stoprendering = 0;
 	x = -1;
 	while (++x < SCREEN_WIDTH * g_app->screen.ssvalue)
 	{
-		render_helper(x, ray, d);
+		render_helper(x);
 		if (g_stoprendering)
 			return ;
 		gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar,
