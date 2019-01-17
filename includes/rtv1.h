@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 14:32:18 by dbezruch          #+#    #+#             */
-/*   Updated: 2018/10/22 15:58:06 by dbezruch         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:17:09 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@
 # include <unistd.h>
 # include <stdint.h>
 # include <stdlib.h>
-#include <gtk/gtk.h>
-
+# include <gtk/gtk.h>
 
 typedef float			t_vector __attribute__((vector_size(sizeof(float)*4)));
 typedef float			t_roots __attribute__((vector_size(sizeof(float)*2)));
@@ -202,9 +201,9 @@ typedef struct			s_app
 
 	GtkWidget			*progressbar;
 	GtkWidget			*window;
-    GtkWidget			*da;
-    GtkWidget			*opendialog;
-    GtkBuilder			*builder;
+	GtkWidget			*da;
+	GtkWidget			*opendialog;
+	GtkBuilder			*builder;
 }						t_app;
 
 extern t_app *g_app;
@@ -256,7 +255,6 @@ void					render(void);
 t_roots					solve_qe(float a, float b, float c);
 
 void					ssaa(void);
-
 
 void					key_handler1(void);
 
