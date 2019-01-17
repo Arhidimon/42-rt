@@ -12,7 +12,7 @@
 
 #include "../includes/rtv1.h"
 
-void	testscene_1()
+void	testscene_1(void)
 {
 	t_primitive *p;
 
@@ -39,7 +39,7 @@ void	testscene_1()
 	add_point_light(&(g_app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
 }
 
-void	testscene_2()
+void	testscene_2(void)
 {
 	t_primitive *p;
 
@@ -63,14 +63,11 @@ void	testscene_2()
 	p = add_cone(A_PR, (t_vector) {0, 1, 0}, (t_vector) {0, 1, 0}, 255);
 	p->reflection = 0.0;
 	p->specular = 10;
-	 p = add_trian(A_PR, (t_vector) {0, 0, 15}, 1, 255);
-	p->reflection = 0.0;
-	p->specular = 100;
 	add_ambient_light(&(g_app->scene.lights), 0.4);
 	add_point_light(&(g_app->scene.lights), (t_vector) {5, 5, 0}, 0.4);
 }
 
-void	testscene_3()
+void	testscene_3(void)
 {
 	t_primitive *p;
 
@@ -91,9 +88,6 @@ void	testscene_3()
 	p = add_cylinder(A_PR, (t_ray){{0, 0, 0}, {0, 1, 0}}, 1, 255);
 	p->reflection = 0;
 	p->specular = 10;
-	p = add_box(A_PR, (t_vector) {-1, 0, 0}, 1, 0xFF00FF);
-	p->reflection = 0.0;
-	p->specular = 100;
 	add_point_light(&(g_app->scene.lights), (t_vector) {5, 0, 1}, 0.4);
 	p = add_cone(A_PR, (t_vector) {0, 1, 0}, (t_vector) {0, 1, 0}, 255);
 	p->reflection = 0.0;
@@ -101,9 +95,9 @@ void	testscene_3()
 	add_ambient_light(&(g_app->scene.lights), 0.4);
 }
 
-void	testscene_4()
+void	testscene_4(void)
 {
-	t_primitive *p;
+	t_primitive	*p;
 
 	g_app->scene.primitives = NULL;
 	g_app->scene.lights = NULL;
@@ -125,11 +119,9 @@ void	testscene_4()
 	add_ambient_light(&(g_app->scene.lights), 0.4);
 	p->specular = -1;
 	p->reflection = 0.5;
-
 }
 
-
-void	testscene_5()
+void	testscene_5(void)
 {
 	g_app->scene.primitives = NULL;
 	g_app->scene.lights = NULL;
