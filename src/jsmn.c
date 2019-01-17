@@ -406,14 +406,22 @@ int		jsmn_cam(char *string, jsmntok_t *tokens, int t)
 					y = ft_strsub(string, tokens[i+10].start, tokens[i+10].end - tokens[i+10].start);
 					z = ft_strsub(string, tokens[i+11].start, tokens[i+11].end - tokens[i+11].start);
 
-					printf("dir x %f\n", ft_atod(x));
-					printf("dir y %f\n", ft_atod(y));
-					printf("dir z %f\n", ft_atod(z));
-					g_app->camera.direction = (t_vector) {0, 0, 0};
-					ant += 20;
+					xx = ft_atod(x);
+					yy = ft_atod(y);
+					zz = ft_atod(z);
+
 					free(x);
 					free(y);
 					free(z);
+					
+					if ((xx < -1 || xx > 1) ||  (yy < -1 || yy > 1) || (zz < -1 || zz > 1))
+					{
+						free(attr);
+						free(str);
+						return (1);
+					}
+					g_app->camera.direction = (t_vector) {xx, yy, zz};
+					ant += 20;
 				}
 				free(attr);
 			}
@@ -647,7 +655,7 @@ int		jsmn_plane(char *string, t_primitive *p)
 			p->p.plane.position = (t_vector) {xx, yy, zz};
 			ant += 10;
 		}
-		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
+		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3)
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
@@ -670,21 +678,6 @@ int		jsmn_plane(char *string, t_primitive *p)
 			p->p.plane.normal = (t_vector) {xx, yy, zz};
 			ant += 20;
 		}
-		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
-		{
-			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
-			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
-			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
-
-			printf("plane_dir x %f\n", ft_atod(x));
-			printf("plane_dir y %f\n", ft_atod(y));
-			printf("plane_dir z %f\n", ft_atod(z));
-
-			ant += 30;
-			free(x);
-			free(y);
-			free(z);
-		}
 		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
@@ -699,20 +692,20 @@ int		jsmn_plane(char *string, t_primitive *p)
 			free(y);
 			free(z);
 
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
 				return (1);
 			}
 			p->rotation = (t_vector){xx, yy, zz};
-			ant += 40;
+			ant += 30;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			p->color = ft_hex_to_int(x);
-			ant += 50;
+			ant += 40;
 
 			free(x);
 		}
@@ -730,7 +723,7 @@ int		jsmn_plane(char *string, t_primitive *p)
 				return (1);
 			}
 			p->reflection = xx;
-			ant += 60;
+			ant += 50;
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
@@ -746,14 +739,14 @@ int		jsmn_plane(char *string, t_primitive *p)
 				return (1);
 			}
 			p->specular = xx;
-			ant += 70;
+			ant += 60;
 		}
 		free(str);
 		i++;
 	}
 	free(string);
 
-	if (ant != 280)
+	if (ant != 210)
 		return (1);
 	return (0);
 }
@@ -797,21 +790,6 @@ int		jsmn_cyl(char *string, t_primitive *p)
 			p->p.cylinder.position = (t_vector) {xx, yy, zz};
 			ant += 10;
 		}
-		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
-		{
-			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
-			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
-			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
-
-			printf("sph_dir x %f\n", ft_atod(x));
-			printf("sph_dir y %f\n", ft_atod(y));
-			printf("sph_dir z %f\n", ft_atod(z));
-			ant += 20;
-
-			free(x);
-			free(y);
-			free(z);
-		}
 		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
@@ -826,20 +804,20 @@ int		jsmn_cyl(char *string, t_primitive *p)
 			free(y);
 			free(z);
 	
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
 				return (1);
 			}
 			p->rotation = (t_vector){xx, yy, zz};
-			ant += 30;
+			ant += 20;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			p->color = ft_hex_to_int(x);
-			ant += 40;
+			ant += 30;
 
 			free(x);
 		}
@@ -858,7 +836,7 @@ int		jsmn_cyl(char *string, t_primitive *p)
 			}
 			p->p.cylinder.radius = xx;
 			p->p.cylinder.radius2 = xx * xx;
-			ant += 50;
+			ant += 40;
 		}
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
@@ -874,7 +852,7 @@ int		jsmn_cyl(char *string, t_primitive *p)
 				return (1);
 			}
 			p->reflection = xx;
-			ant += 60;
+			ant += 50;
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
@@ -890,9 +868,9 @@ int		jsmn_cyl(char *string, t_primitive *p)
 				return (1);
 			}
 			p->specular = xx;
-			ant += 70;
+			ant += 60;
 		}
-		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
+		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3)
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
@@ -913,14 +891,14 @@ int		jsmn_cyl(char *string, t_primitive *p)
 				return (1);
 			}
 			p->p.cylinder.normal = (t_vector) {xx, yy, zz};
-			ant += 80;
+			ant += 70;
 		}
 		free(str);
 		i++;
 	}
 	free(string);
 
-	if (ant != 360)
+	if (ant != 280)
 		return (1);
 	return (0);
 }
@@ -964,21 +942,6 @@ int		jsmn_cone(char *string, t_primitive *p)
 			p->p.cone.position = (t_vector) {xx, yy, zz};
 			ant += 10;
 		}
-		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
-		{
-			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
-			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
-			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
-
-			printf("sph_dir x %f\n", ft_atod(x));
-			printf("sph_dir y %f\n", ft_atod(y));
-			printf("sph_dir z %f\n", ft_atod(z));
-			ant += 20;
-
-			free(x);
-			free(y);
-			free(z);
-		}
 		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
@@ -993,20 +956,20 @@ int		jsmn_cone(char *string, t_primitive *p)
 			free(y);
 			free(z);
 	
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
 				return (1);
 			}
 			p->rotation = (t_vector){xx, yy, zz};
-			ant += 30;
+			ant += 20;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			p->color = ft_hex_to_int(x);
-			ant += 40;
+			ant += 30;
 
 			free(x);
 		}
@@ -1024,7 +987,7 @@ int		jsmn_cone(char *string, t_primitive *p)
 				return (1);
 			}
 			p->p.cone.angle = xx;
-			ant += 50;
+			ant += 40;
 		}
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
@@ -1039,7 +1002,7 @@ int		jsmn_cone(char *string, t_primitive *p)
 				return (1);
 			}
 			p->reflection = xx;
-			ant += 60;
+			ant += 50;
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
@@ -1055,9 +1018,9 @@ int		jsmn_cone(char *string, t_primitive *p)
 				return (1);
 			}
 			p->specular = xx;
-			ant += 70;
+			ant += 60;
 		}
-		if (!ft_strcmp(str, "normal") && tokens[i+1].size == 3)
+		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3)
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
 			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
@@ -1078,14 +1041,14 @@ int		jsmn_cone(char *string, t_primitive *p)
 				return (1);
 			}
 			p->p.cone.normal = (t_vector) {xx, yy, zz};
-			ant += 80;
+			ant += 70;
 		}
 		free(str);
 		i++;
 	}
 	free(string);
 
-	if (ant != 360)
+	if (ant != 280)
 		return (1);
 	return (0);
 }
@@ -1129,21 +1092,6 @@ int		jsmn_sph(char *string, t_primitive *p)
 			p->p.sphere.position = (t_vector) {xx, yy, zz};
 			ant += 10;
 		}
-		if (!ft_strcmp(str, "dir") && tokens[i+1].size == 3) 
-		{
-			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
-			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
-			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
-
-			printf("sph_dir x %f\n", ft_atod(x));
-			printf("sph_dir y %f\n", ft_atod(y));
-			printf("sph_dir z %f\n", ft_atod(z));
-			ant += 20;
-
-			free(x);
-			free(y);
-			free(z);
-		}
 		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
 		{
 			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
@@ -1157,21 +1105,21 @@ int		jsmn_sph(char *string, t_primitive *p)
 			free(x);
 			free(y);
 			free(z);
-	
-			if ((xx < -180 || xx > 180) || (yy < -180 || yy > 180) || (zz < -180 || zz > 180))
+
+			if ((xx * xx) + (yy * yy) + (zz * zz)) != 1)
 			{
 				free(str);
 				free(string);
 				return (1);
 			}
 			p->rotation = (t_vector){xx, yy, zz};
-			ant += 30;
+			ant += 20;
 		}
 		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
 		{
 			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
 			p->color = ft_hex_to_int(x);
-			ant += 40;
+			ant += 30;
 
 			free(x);
 		}
@@ -1190,7 +1138,7 @@ int		jsmn_sph(char *string, t_primitive *p)
 			}
 			p->p.sphere.radius = xx;
 			p->p.sphere.radius2 = xx * xx;
-			ant += 50;
+			ant += 40;
 		}
 		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
 		{
@@ -1206,7 +1154,7 @@ int		jsmn_sph(char *string, t_primitive *p)
 				return (1);
 			}
 			p->reflection = xx;
-			ant += 60;
+			ant += 50;
 		}
 		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
 		{
@@ -1222,14 +1170,14 @@ int		jsmn_sph(char *string, t_primitive *p)
 				return (1);
 			}
 			p->specular = xx;
-			ant += 70;
+			ant += 60;
 		}
 		free(str);
 		i++;
 	}
 	free(string);
 
-	if (ant != 280)
+	if (ant != 210)
 		return (1);
 	return (0);
 }
@@ -1253,7 +1201,7 @@ int		jsmn_obj(char *string)
 		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
 		if (!ft_strcmp(str, "sphere"))
 		{
-			if (tokens[i+1].size != 7 || 
+			if (tokens[i+1].size != 6 || 
 				jsmn_sph(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
@@ -1263,7 +1211,7 @@ int		jsmn_obj(char *string)
 		}
 		if (!ft_strcmp(str, "cylinder"))
 		{
-			if (tokens[i+1].size != 8 || 
+			if (tokens[i+1].size != 7 || 
 				jsmn_cyl(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
@@ -1273,7 +1221,7 @@ int		jsmn_obj(char *string)
 		}
 		if (!ft_strcmp(str, "cone"))
 		{
-			if (tokens[i+1].size != 8 ||
+			if (tokens[i+1].size != 7 ||
 				jsmn_cone(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
@@ -1283,7 +1231,7 @@ int		jsmn_obj(char *string)
 		}
 		if (!ft_strcmp(str, "plane"))
 		{
-			if (tokens[i+1].size != 7 ||
+			if (tokens[i+1].size != 6 ||
 				jsmn_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
