@@ -21,6 +21,27 @@
 t_app *g_app;
 char g_stoprendering;
 
+void free_scene()
+{
+	t_primitive *temppr;
+	t_primitive *templ;
+	
+	while(g_app->scene.primitives)
+	{
+		temppr = g_app->scene.primitives->next;
+		g_app->scene.primitives = g_app->scene.primitives->next;
+		free(temppr);
+	}
+	g_app->scene.lights == NULL;
+	while(g_app->scene.lights)
+	{
+		templ = g_app->scene.lights->next;
+		g_app->scene.lights = g_app->scene.lights->next;
+		free(templ);
+	}
+	g_app->scene.lights == NULL;
+}
+
 void menu_open (GtkMenuItem *menuitem, gpointer user_data)
 {
 	GtkWidget *dialog;
@@ -144,7 +165,10 @@ int main(int argc, char *argv[])
     
     srand((unsigned) time(&t));
  	initialize_app();
+	//testscene_4();
+	//free_scene();
 	testscene_4();
+	//ft_parser();
 	g_app->curobj = g_app->scene.primitives;
 	g_app->curlobj = g_app->scene.lights;
 	initialize_gtk();
