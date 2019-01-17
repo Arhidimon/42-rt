@@ -378,9 +378,9 @@ int		ft_parse_json(char *filepath)
 	return (0);
 }
 
-char	*ft_parser(void)
+char	*ft_parser(char *filepath)
 {
-	if (ft_parse_json(FILE_PATH))
+	if (ft_parse_json(filepath))
 	{
 		printf("ERROR!!!!11");
 		return ("Hello!");
