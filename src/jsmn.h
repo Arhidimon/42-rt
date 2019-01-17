@@ -1,7 +1,12 @@
 #ifndef __JSMN_H_
 #define __JSMN_H_
+#define MAX_T 1024
+#define BUFF_SIZE	32
+#define FILE_PATH "test.json"
 
 #include <stddef.h>
+#include "../includes/rtv1.h"
+#include "../libft/includes/libft.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +26,13 @@ typedef enum {
 	JSMN_STRING = 3,
 	JSMN_PRIMITIVE = 4
 } jsmntype_t;
+
+// typedef struct		s_list
+// {
+// 	void			*content;
+// 	size_t			content_size;
+// 	struct s_list	*next;
+// }					t_list;
 
 enum jsmnerr {
 	/* Not enough tokens were provided */
@@ -61,6 +73,17 @@ typedef struct {
  * Create JSON parser over an array of tokens
  */
 void jsmn_init(jsmn_parser *parser);
+
+int		ft_check_scene(char *string, jsmntok_t *tokens, int t);
+int		ft_check_objects(char *string);
+int		ft_check_sphere(char *string, t_primitive *p);
+int		ft_check_cone(char *string, t_primitive *p);
+int		ft_check_cylinder(char *string, t_primitive *p);
+int		ft_check_plane(char *string, t_primitive *p);
+int		ft_check_dlight(char *string);
+int		ft_check_plight(char *string);
+int		ft_check_alight(char *string);
+int		ft_check_camera(char *string, jsmntok_t *tokens, int t);
 
 /**
  * Run JSON parser. It parses a JSON data string into and array of tokens, each describing
