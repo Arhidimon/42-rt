@@ -281,4 +281,7 @@ void					initialize_gtk(void);
 int						count_fps(void);
 int						print_fps(float fps);
 
+
+char					*ft_parser(void);
+
 #endif

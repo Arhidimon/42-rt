@@ -116,6 +116,7 @@ void	testscene_4()
 	add_ambient_light(&(g_app->scene.lights), 0.4);
 	p->specular = -1;
 	p->reflection = 0.5;
+
 }
 
 void	testscene_5()
