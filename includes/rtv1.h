@@ -6,7 +6,7 @@
 /*   By: dbezruch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 14:32:18 by dbezruch          #+#    #+#             */
-/*   Updated: 2019/01/17 19:17:09 by atikhono         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:33:15 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,12 +268,8 @@ t_primitive				*add_cylinder(t_primitive **primitives, t_ray pnr,
 						int color);
 t_primitive				*add_cone(t_primitive **primitives, t_vector position,
 						t_vector normal, int color);
-t_primitive				*add_trian(t_primitive **primitives, t_vector position, t_vector normal,
-						float radius, int color);
-t_primitive				*add_box(t_primitive **primitives, t_vector position,
-						float radius, int color);
 t_primitive				*add_trian(t_primitive **primitives, t_vector position,
-						t_vector normal, float radius, int color);
+						float radius, int color);
 t_primitive				*add_box(t_primitive **primitives, t_vector position,
 						float radius, int color);
 

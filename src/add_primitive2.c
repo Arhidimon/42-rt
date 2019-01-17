@@ -6,14 +6,14 @@
 /*   By: vkaznodi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 18:34:23 by vkaznodi          #+#    #+#             */
-/*   Updated: 2019/01/17 18:34:25 by vkaznodi         ###   ########.fr       */
+/*   Updated: 2019/01/17 19:31:25 by atikhono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
 t_primitive		*add_trian(t_primitive **primitives, t_vector position,
-	t_vector normal, float radius, int color)
+		float radius, int color)
 {
 	t_primitive *primitive;
 
