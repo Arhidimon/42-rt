@@ -45,7 +45,6 @@ void		render_helper(int x)
 void		render(void)
 {
 	int			x;
-	int			y;
 
 	g_stoprendering = 0;
 	x = -1;
