@@ -15,7 +15,7 @@
 void	initialize_app(void)
 {
 	g_app = malloc(sizeof(t_app));
-	g_app->screen.ssvalue = SS_VALUE;
+	g_app->screen.ssvalue = g_ss;
 	g_app->screen.pixels = malloc(sizeof(int32_t) * (int)(SCREEN_WIDTH
 			* SCREEN_HEIGHT));
 	g_app->screen.sspixels = malloc(sizeof(int32_t) * (int)(SCREEN_WIDTH

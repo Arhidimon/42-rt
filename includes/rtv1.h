@@ -242,6 +242,7 @@ typedef struct			s_app
 
 extern t_app *g_app;
 extern char g_stoprendering;
+extern int	g_ss;
 
 t_vector				rotate_0x(t_vector vector, float angle);
 t_vector				rotate_0y(t_vector vector, float angle);

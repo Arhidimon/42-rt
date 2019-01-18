@@ -16,6 +16,7 @@
 
 t_app		*g_app;
 char		g_stoprendering;
+int			g_ss;
 
 gboolean	keypress(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
@@ -27,9 +28,14 @@ gboolean	keypress(GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 int			main(int argc, char *argv[])
 {
-	time_t t;
+	time_t	t;
 
 	srand((unsigned)time(&t));
+	if (argc == 2 && (argv[1][0] >= '1' && argv[1][0] <= '9') &&
+		argv[1][1] == 0)
+		g_ss = argv[1][0] - '0';
+	else
+		g_ss = 1;
 	initialize_app();
 	testscene_4();
 	g_app->curobj = g_app->scene.primitives;
