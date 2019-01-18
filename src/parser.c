@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "jsmn.h"
+#include "../jsmn/jsmn.h"
 
 char	*ft_read_file(char *filepath)
 {

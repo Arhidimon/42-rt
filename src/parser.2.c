@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "jsmn.h"
+#include "../jsmn/jsmn.h"
 
 int		ft_iswhitespace(char c)
 {
