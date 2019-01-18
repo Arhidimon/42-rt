@@ -903,6 +903,264 @@ int		jsmn_cyl(char *string, t_primitive *p)
 	return (0);
 }
 
+int		jsmn_trian(char *string, t_primitive *p) 
+{
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
+
+	i = 0;
+	ant = 0;
+	p = add_trian(A_PR, (t_vector){0, 0, 0}, 1, 0xFFFFFF);
+	jsmn_init(&parser);
+	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
+	while(i < t) 
+	{
+		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
+		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3)
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			free(x);
+			free(y);
+			free(z);
+		
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->p.trian.position = (t_vector) {xx, yy, zz};
+			ant += 10;
+		}
+		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			free(x);
+			free(y);
+			free(z);
+	
+			if (((xx * xx) + (yy * yy) + (zz * zz)) > 1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 20;
+		}
+		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			p->color = ft_hex_to_int(x);
+			ant += 30;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "size") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+				
+			free(x);
+
+			if (xx <= 0 || xx >= 1000)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->p.trian.radius = xx;
+			p->p.trian.radius2 = xx * xx;
+			ant += 40;
+		}
+		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+
+			free(x);
+
+			if (xx < 0 || xx >= 1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->reflection = xx;
+			ant += 50;
+		}
+		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+
+			free(x);
+
+			if (xx < 0 && xx != -1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->specular = xx;
+			ant += 60;
+		}
+		free(str);
+		i++;
+	}
+	free(string);
+
+	if (ant != 210)
+		return (1);
+	return (0);
+}
+
+int		jsmn_box(char *string, t_primitive *p) 
+{
+	int				ant,i,t;
+	char			*str, *x, *y, *z;
+	double			xx, yy, zz;
+	jsmntok_t		tokens[MAX_T];
+	jsmn_parser		parser;
+
+	i = 0;
+	ant = 0;
+	p = add_box(A_PR, (t_vector){0, 0, 0}, 1, 0xFFFFFF);
+	jsmn_init(&parser);
+	t = jsmn_parse(&parser, string, ft_strlen(string), tokens, MAX_T);
+	while(i < t) 
+	{
+		str = ft_strsub(string, tokens[i].start, tokens[i].end - tokens[i].start);
+		if (!ft_strcmp(str, "pos") && tokens[i+1].size == 3)
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			free(x);
+			free(y);
+			free(z);
+		
+			if ((xx < -1000 || xx > 1000) ||  (yy < -1000 || yy > 1000) || (zz < -1000 || zz > 1000))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->p.box.position = (t_vector) {xx, yy, zz};
+			ant += 10;
+		}
+		if (!ft_strcmp(str, "rot") && tokens[i+1].size == 3) 
+		{
+			x = ft_strsub(string, tokens[i+2].start, tokens[i+2].end - tokens[i+2].start);
+			y = ft_strsub(string, tokens[i+3].start, tokens[i+3].end - tokens[i+3].start);
+			z = ft_strsub(string, tokens[i+4].start, tokens[i+4].end - tokens[i+4].start);
+
+			xx = ft_atod(x);
+			yy = ft_atod(y);
+			zz = ft_atod(z);
+
+			free(x);
+			free(y);
+			free(z);
+	
+			if (((xx * xx) + (yy * yy) + (zz * zz)) > 1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->rotation = (t_vector){xx, yy, zz};
+			ant += 20;
+		}
+		if (!ft_strcmp(str, "color") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			p->color = ft_hex_to_int(x);
+			ant += 30;
+
+			free(x);
+		}
+		if (!ft_strcmp(str, "size") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+				
+			free(x);
+
+			if (xx <= 0 || xx >= 1000)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->p.box.radius = xx;
+			p->p.box.radius2 = xx * xx;
+			ant += 40;
+		}
+		if (!ft_strcmp(str, "refl") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+
+			free(x);
+
+			if (xx < 0 || xx >= 1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->reflection = xx;
+			ant += 50;
+		}
+		if (!ft_strcmp(str, "spec") && tokens[i].size == 1) 
+		{
+			x = ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start);
+			xx = ft_atod(x);
+
+			free(x);
+
+			if (xx < 0 && xx != -1)
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+			p->specular = xx;
+			ant += 60;
+		}
+		free(str);
+		i++;
+	}
+	free(string);
+
+	if (ant != 210)
+		return (1);
+	return (0);
+}
+
 int		jsmn_cone(char *string, t_primitive *p) 
 {
 	int				ant,i,t;
@@ -1233,6 +1491,26 @@ int		jsmn_obj(char *string)
 		{
 			if (tokens[i+1].size != 6 ||
 				jsmn_plane(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "triangle"))
+		{
+			if (tokens[i+1].size != 6 || 
+				jsmn_trian(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
+			{
+				free(str);
+				free(string);
+				return (1);
+			}
+		}
+		if (!ft_strcmp(str, "box"))
+		{
+			if (tokens[i+1].size != 6 || 
+				jsmn_box(ft_strsub(string, tokens[i+1].start, tokens[i+1].end - tokens[i+1].start), p))
 			{
 				free(str);
 				free(string);
