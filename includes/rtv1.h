@@ -40,7 +40,7 @@
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 640
 # define FRAME_VALUES 60
-# define SS_VALUE 1
+# define SS_VALUE 4
 # define SC_WH SCREEN_WIDTH,SCREEN_HEIGHT
 
 # define VIEWPORT_WIDTH 1
