@@ -49,7 +49,7 @@ int			main(int argc, char *argv[])
 void		on_window_main_destroy(void)
 {
 	while (g_main_context_iteration(NULL, FALSE))
-		{
-		}
+	{
+	}
 	gtk_main_quit();
 }

@@ -35,8 +35,6 @@
 # define TEMP_M (dotproduct(TM1)+dotproduct(closest_obj->rotation,TC1))
 # define TEMP_M1 (dotproduct(TM1)+dotproduct(closest_obj->rotation,TC2))
 
-
-
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 640
 # define FRAME_VALUES 60
