@@ -53,7 +53,8 @@ void		render(void)
 		render_helper(x);
 		if (g_stoprendering)
 			return ;
-		gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar,
+		if (x % (SCREEN_WIDTH / 100) == 0)
+			gtk_progress_bar_set_fraction((GtkProgressBar *)g_app->progressbar,
 		(double)x / (SCREEN_WIDTH * g_app->screen.ssvalue));
 		while (g_main_context_iteration(NULL, FALSE))
 		{
