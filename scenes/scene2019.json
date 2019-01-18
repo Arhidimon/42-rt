@@ -1,0 +1,103 @@
+{
+    "camera": {
+        "pos": [0, 0, -2],
+        "dir": [0, 0, 0]
+    },
+    "scene": {
+        "sphere": {
+            "pos": [0, -3.5, -0.3],
+            "size": 3,
+            "color": "0xFFFFFF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, 0, 0.3],
+            "size": 2,
+            "color": "0xFFFFFF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, 2.5, 0.1],
+            "size": 1,
+            "color": "0xFFFFFF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [-0.2, 2.7, -0.8],
+            "size": 0.1,
+            "color": "0xF0FF00",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0.2, 2.7, -0.8],
+            "size": 0.1,
+            "color": "0xF0FF00",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, 0, -1.7],
+            "size": 0.1,
+            "color": "0x0000FF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, 0.5, -1.6],
+            "size": 0.1,
+            "color": "0x0000FF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, -1.5, -2],
+            "size": 0.1,
+            "color": "0x0000FF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, 2.5, -2.5],
+            "size": 0.1,
+            "color": "0x0000FF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "sphere": {
+            "pos": [0, -3.5, -2.7],
+            "size": 0.1,
+            "color": "0x0000FF",
+            "refl": 0.0,
+            "spec": 10,
+            "rot": [0, 0, 0]
+        },
+        "box": {
+            "pos": [0, 3.5, -1],
+            "size": 0.1,
+            "color": "0x00FFFF",
+            "refl": 0.0,
+            "spec": 100,
+            "rot": [0, 0, 0]
+        },
+        "point_light": {
+            "pos": [0, 2, -10],
+            "intensity": 1
+        },
+        "ambient_light": {
+            "intensity": 0.4
+        }
+    }
+}
